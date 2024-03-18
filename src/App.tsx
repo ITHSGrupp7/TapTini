@@ -22,6 +22,7 @@ function App() {
           count is {count}
         </button>
         <p>
+          <b>Reza</b> testing merging
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
