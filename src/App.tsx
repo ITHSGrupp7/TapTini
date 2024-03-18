@@ -2,20 +2,25 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Meny from './Meny'
 
 function App() {
-  const [page, setPage] = useState(<div><p>body</p></div>)
+  const [page, setPage] = useState(<Meny />)
 
   return (
     <>
       <header>
         <h2>Tap & Tini</h2>
-        <button>Cart</button>
+        <a href="/cart">
+          <span className="material-symbols-outlined">
+            shopping_cart
+          </span>
+        </a>
       </header>
-      
-      <div className='content'>
+
+      <main className='content'>
         {page}
-      </div>
+      </main>
     </>
   )
 }
