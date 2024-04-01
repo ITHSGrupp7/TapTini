@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import './App.css'
-import { MenyCourseComponent } from './components/Data/MenyCourseComponent'
+import { MenuCourseComponent } from './components/Data/MenuCourseComponent'
 
 function App() {
-  const [page, setPage] = useState(<MenyCourseComponent/>)
+  const [page, setPage] = useState(<MenuCourseComponent/>)
 
   return (
     <>

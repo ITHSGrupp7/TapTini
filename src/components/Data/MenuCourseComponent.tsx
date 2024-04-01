@@ -7,7 +7,7 @@ type Item = {
   description: string;
 };
 
-export const MenyCourseComponent = () => {
+export const MenuCourseComponent = () => {
   const [items, setItems] = useState<Item[] | undefined>(undefined);
   const [currentItem, setCurrentItem] = useState<Item>()
 
@@ -29,24 +29,24 @@ export const MenyCourseComponent = () => {
         console.error("Error fetching data:", error);
       });
 
-      //  // Retrieve the clicked item from localStorage on component mount
-      // const savedItem = localStorage.getItem('clickedItem');
-      // if (savedItem) {
-      // setCurrentItem(JSON.parse(savedItem));
-      // }
+       // Retrieve the clicked item from localStorage on component mount
+      const savedItem = localStorage.getItem('clickedItem');
+      if (savedItem) {
+      setCurrentItem(JSON.parse(savedItem));
+      }
 
 
   }, []);
 
 
 
-  // const handleClick = (item: Item) => {
-  //   // Save the clicked item to localStorage
-  //   localStorage.setItem('clickedItem', JSON.stringify(item));
+  const handleClick = (item: Item) => {
+    // Save the clicked item to localStorage
+    localStorage.setItem('clickedItem', JSON.stringify(item));
     
-  //   // Set the currentItem state
-  //   setCurrentItem(item);
-  // };
+    // Set the currentItem state
+    setCurrentItem(item);
+  };
 
 
 
@@ -57,16 +57,18 @@ export const MenyCourseComponent = () => {
         {items &&
           Array.isArray(items) &&
           items.map((item: Item) => (
-            <button onClick={() => setCurrentItem(item)} key={item._id} className="MainCourseButton">{item.title}</button>
+            <button onClick={() => handleClick(item)} key={item._id} className="MainCourseButton">{item.title}</button>
           ))}
       </section>
 
       <section className="display">
-       
-        <img src={currentItem?.imageUrl} alt="placeholder" />
-         <p>{currentItem?.description}</p>
-
-        <button>Gå vidare</button>
+        {currentItem && ( // Render display section only if currentItem is not null
+          <>
+            <img src={currentItem.imageUrl} alt="placeholder" />
+            <p>{currentItem.description}</p>
+            <button>Gå vidare</button>
+          </>
+        )}
       </section>
     </div>
   );
