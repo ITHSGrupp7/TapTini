@@ -29,8 +29,27 @@ export const MenyCourseComponent = () => {
         console.error("Error fetching data:", error);
       });
 
-    //   console.log(items![0])
+      //  // Retrieve the clicked item from localStorage on component mount
+      // const savedItem = localStorage.getItem('clickedItem');
+      // if (savedItem) {
+      // setCurrentItem(JSON.parse(savedItem));
+      // }
+
+
   }, []);
+
+
+
+  // const handleClick = (item: Item) => {
+  //   // Save the clicked item to localStorage
+  //   localStorage.setItem('clickedItem', JSON.stringify(item));
+    
+  //   // Set the currentItem state
+  //   setCurrentItem(item);
+  // };
+
+
+
 
   return (
     <div className="wrapper">
