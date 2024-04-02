@@ -9,7 +9,6 @@ function App() {
       <header>
       </header>
       <main className='content'>
-        {page}
       </main>
     </>
   )
