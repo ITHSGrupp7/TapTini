@@ -1,14 +1,9 @@
 import { Item } from '../../service/Service'
 import './style.css'
 
-// Homepage
-// const [items, setItems] = useState<Item[] | undefined>(undefined);
-
-// items hamtas av ItemSelector, ItemDisplayer 
-
 type UsingProps = {
     items: Item[] | undefined,
-    setCurrentItems: React.Dispatch<Item | undefined>, 
+    setCurrentItem: React.Dispatch<Item | undefined>, 
  }
 
 
@@ -17,13 +12,13 @@ type UsingProps = {
     return trimmedTitle;
  }
 
-const ItemSelector = ({items, setCurrentItems} : UsingProps) => {
+const ItemSelector = ({items, setCurrentItem} : UsingProps) => {
     return (
         <div>
             {items && 
             Array.isArray(items) && 
             items.map((item: Item) => (
-                <button onClick= {() => setCurrentItems(item)} key={item._id}>{trimTitle(item.title)}</button>
+                <button onClick= {() => setCurrentItem(item)} key={item._id}>{trimTitle(item.title)}</button>
             ))}
         </div>
     )

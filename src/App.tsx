@@ -1,15 +1,10 @@
-import { useState } from 'react'
+import Homepage from './pages/Homepage/Homepage'
 import './App.css'
 
 function App() {
-  const [page, setPage] = useState(<div></div>)
-
   return (
     <>
-      <header>
-      </header>
-      <main className='content'>
-      </main>
+      <Homepage />
     </>
   )
 }
