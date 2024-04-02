@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Item, fetchData } from '../../service/Service';
 import ItemSelector from '../../components/ItemSelector/ItemSelector';
+import ItemDisplayer from '../../components/ItemDisplayer/ItemDisplayer';
 import './style.css'
 
 const Homepage = () => {
@@ -24,8 +25,8 @@ const Homepage = () => {
         <div>
             <h2>Homepage</h2>
             <ItemSelector items={items} setCurrentItem={setCurrentItem} />
-
-            <h1>Active: {currentItem?.title}</h1>
+            <ItemDisplayer currentItem={currentItem} />
+            <button>Continue</button>
         </div>
     )
 }
