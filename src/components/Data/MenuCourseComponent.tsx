@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 type Item = {
   _id: number;
@@ -9,7 +10,8 @@ type Item = {
 
 export const MenuCourseComponent = () => {
   const [items, setItems] = useState<Item[] | undefined>(undefined);
-  const [currentItem, setCurrentItem] = useState<Item>()
+  const [currentItem, setCurrentItem] = useState<Item | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Fetching data...");
@@ -23,33 +25,42 @@ export const MenuCourseComponent = () => {
       .then((data) => {
         console.log("Fetched data:", data);
         setItems(data);
-        setCurrentItem(data[0])
+        setCurrentItem(data[0]); // Set the currentItem to the first item from the API response
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-
-       // Retrieve the clicked item from localStorage on component mount
-      const savedItem = localStorage.getItem('clickedItem');
-      if (savedItem) {
-      setCurrentItem(JSON.parse(savedItem));
-      }
-
-
   }, []);
 
+  const handleContinue = () => {
+    if (currentItem) {
+      try {
+        const existingCartItems = localStorage.getItem('cartItems');
+        let cartItemsArray: Item[] = [];
 
-
-  const handleClick = (item: Item) => {
-    // Save the clicked item to localStorage
-    localStorage.setItem('clickedItem', JSON.stringify(item));
-    
-    // Set the currentItem state
-    setCurrentItem(item);
+        if (existingCartItems) {
+          try {
+            // Check if the retrieved data is JSON-parseable
+            cartItemsArray = JSON.parse(existingCartItems);
+          } catch (error) {
+            // If not, initialize as an empty array
+            console.error('Error parsing existing cart items:', error);
+          }
+        }
+        // Add the current item to the cart items array
+        const updatedCartItems = [...cartItemsArray, currentItem];
+      
+        // Save the updated cart items array to localStorage
+        console.log('Updated cart items:', updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        
+        navigate('/siders');
+      } catch(error) {
+        console.error('Error saving item to localStorage:', error);
+      }
+      
+    }
   };
-
-
-
 
   return (
     <div className="wrapper">
@@ -57,16 +68,16 @@ export const MenuCourseComponent = () => {
         {items &&
           Array.isArray(items) &&
           items.map((item: Item) => (
-            <button onClick={() => handleClick(item)} key={item._id} className="MainCourseButton">{item.title}</button>
+            <button onClick={() => setCurrentItem(item)} key={item._id} className="MainCourseButton">{item.title}</button>
           ))}
       </section>
 
       <section className="display">
-        {currentItem && ( // Render display section only if currentItem is not null
+        {currentItem && (
           <>
-            <img src={currentItem.imageUrl} alt="placeholder" />
+            <img src={currentItem.imageUrl} alt="ImagePlaceholder" />
             <p>{currentItem.description}</p>
-            <button>Gå vidare</button>
+            <button onClick={handleContinue}>Gå vidare</button>
           </>
         )}
       </section>
