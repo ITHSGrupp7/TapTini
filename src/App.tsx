@@ -6,6 +6,7 @@ import Meny from './Meny'
 
 function App() {
   const [page, setPage] = useState(<Meny />)
+  
 
   return (
     <>
