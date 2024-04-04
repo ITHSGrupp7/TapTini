@@ -24,7 +24,7 @@ const ItemDisplayer = ({currentItem} : UsingProps) => {
                     <div className="item-info__title">
                         <h1>
                             {trimTitle(currentItem.title)}
-                            <span className="item-info__price">199 SEK</span>
+                            <span className="item-info__price">{currentItem.price} SEK</span>
                         </h1>
                         <p>{currentItem.description}</p>
                     </div>
