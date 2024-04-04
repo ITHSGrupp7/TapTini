@@ -1,3 +1,4 @@
+import React from "react";
 import { Item } from '../../service/Service'
 import './style.css'
 
@@ -7,19 +8,23 @@ type UsingProps = {
  }
 
 
- const trimTitle = (title: string) => {
-    const trimmedTitle = title.split(' ').slice(1).join(' ');
-    return trimmedTitle;
- }
+const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
+ 
 
 const ItemSelector = ({items, setCurrentItem} : UsingProps) => {
     return (
-        <div>
-            {items && 
-            Array.isArray(items) && 
-            items.map((item: Item) => (
-                <button onClick= {() => setCurrentItem(item)} key={item._id}>{trimTitle(item.title)}</button>
-            ))}
+        <div className="item-selector">
+            <h1 className="item-selector__sectionTitle">MENY</h1>
+            <section className="item-selector__items-group">
+                {items && 
+                Array.isArray(items) && 
+                items.map((item: Item) => (
+                    <button className="item" onClick= {() => setCurrentItem(item)} key={item._id}>
+                        <span className="item__icon"></span>
+                        <span className="item__title">{trimTitle(item.title)}</span>
+                    </button>
+                ))}
+            </section>
         </div>
     )
 }

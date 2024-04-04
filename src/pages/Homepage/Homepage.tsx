@@ -4,6 +4,7 @@ import ItemSelector from '../../components/ItemSelector/ItemSelector';
 import ItemDisplayer from '../../components/ItemDisplayer/ItemDisplayer';
 import './style.css'
 
+
 const Homepage = () => {
     const [items, setItems] = useState<Item[] | undefined>(undefined);
     const [currentItem, setCurrentItem] = useState<Item>();
@@ -15,19 +16,18 @@ const Homepage = () => {
 
             itemsData.then((data : Item[]) => {
                 setItems(data);
+                setCurrentItem(data[0])
             })
         } catch(error) {
             console.error("Network error response");
         }
-    })
+    }, [])
 
     return (
-        <div>
-            <h2>Homepage</h2>
+        <main className="content-wrapper">
             <ItemSelector items={items} setCurrentItem={setCurrentItem} />
             <ItemDisplayer currentItem={currentItem} />
-            <button>Continue</button>
-        </div>
+        </main>
     )
 }
 

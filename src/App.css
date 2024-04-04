@@ -1,4 +1,41 @@
+:root {
+  --font-default-color: #fff;
+  --font-hover-color: #E46D0E;
+  
+  --font-family-glory: 'Glory';
+  --font-family-bellota: "Bellota";
+  --font-family-bebas-neue: "Bebas Neue";
+}
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  background-color: rgb(79, 82, 90);
+  background-image: url(src/assets/images/tapas-bg.jpg);
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: var(--font-default-color);
+  min-height: 100vh;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  padding: 2.5rem 1rem;
+  transition: transform ease 1s;
+}
+
+.header:hover {
+  cursor: pointer;
+  transform: scale(1.15) skew(-2deg, 2deg);
+}
+
+.header:active {
+  transform: scale(1);
 }

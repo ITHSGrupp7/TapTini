@@ -1,3 +1,115 @@
-img { 
-    width: 300px;
+:root {
+    --font-family-glory: 'Glory';
+    --font-family-bellota: "Bellota";
+    --font-family-bebas-neue: "Bebas Neue";
+    --font-weight-section-title: 200;
+    --font-size-md: 1.65rem;
+    --font-size-paragraph: 1.2rem;
+    --font-size-price: 1.7rem;
+}
+
+ .item-displayer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+ }
+
+ .item-displayer__section-title {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 4.8rem;
+ }
+
+ .item-displayer__section-title h1 {
+    font-family: var(--font-family-glory);
+    font-weight: var(--font-weight-section-title);
+ }
+
+ .item-displayer__basket {
+   background-image: url(src/assets/images/basket-icon-40.png);
+   background-repeat: no-repeat; 
+   background-position: center;
+   display: inline-block;
+   min-width: 40px;
+   min-height: 40px;
+   cursor: pointer;
+   transition: transform ease .4s;
+ }
+
+ .item-displayer__basket:hover {
+    transform: scale(1.15);
+ }
+
+ img {
+    border-radius: 5px;
+ }
+
+ .item-displayer__item {
+    background-color: rgba(0,0,0,0.885);
+    border-radius: 15px;
+    padding: 1rem;
+    
+    position: relative;
+ }
+
+ .item-displayer__item-info {
+    background-color: #bb5807e0;
+    transition: transform ease-in-out .8s;
+    padding: .5rem;
+    width: 70%;
+    position:absolute;
+    bottom: 10%;
+    left: 8%;
+ }
+
+ .item-displayer__item-info:hover {
+    transform: scale(1.15) translate(.5rem, -1rem);
+ }
+
+.item-info__title h1 {
+    font-family: var(--font-family-bebas-neue);
+    font-weight: 400;
+    font-size: 2rem;
+    letter-spacing: .08rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ .item-info__price {
+    font-size: 1.55rem;
+    color: rgb(49, 20, 0);
+}
+
+.item-info__title p {
+    font-family: var(--font-family-bellota);
+    font-size: var(--font-size-paragraph);
+}
+
+.continue-button {
+    background-color: rgb(239, 154,27);
+    background: linear-gradient(180deg, rgb(179, 115, 21) 40%, rgb(179,144,92) 100%);
+    border:none;
+    border-radius: 10px;
+    cursor:pointer;
+    color: white;
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-bebas-neue);
+    font-weight: 500;
+    letter-spacing: 0.09rem;
+    padding: .5rem;
+    transition: transform ease .9s;
+}
+
+.continue-button:hover {
+    background: linear-gradient(25deg, rgb(170, 115, 21) 40%, rgb(179, 144, 02) 100%);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.37);
+}
+
+.continue-button:active {
+    color: #682b07;
+    -webkit-box-shadow: inset 1px 1px 10px #8b4308;
+    -moz-box-shadow:    inset 1px 1px 10px #8b4308;
+    box-shadow:         inset 1px 1px 10px #8b4308;
 }
