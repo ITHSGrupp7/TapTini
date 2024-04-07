@@ -2,6 +2,9 @@ import Homepage from './pages/Homepage/Homepage'
 import './App.css'
 
 function App() {
+  // const [page, setPage] = useState(<Meny />)
+  
+
   return (
     <div className="page-wrapper">
       <div className="header">
