@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import './DrinksComponent.css'
 
-export const GetDrinks = (props: { dishId: number }) => {
+export const GetDrinks = (props: { dishName: number }) => {
 
   type Drink = {
     strDrink: string;
@@ -9,6 +10,18 @@ export const GetDrinks = (props: { dishId: number }) => {
   }
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
+
+  // Räkor
+
+  // Vegansk Jackfruit
+  
+  // Patatas Bravas
+  
+  // Tortilla Española
+  
+  // Champinjoner al Ajillo
+  
+  // Manchego Ost med Honung och Valnötter
 
   useEffect(() => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass")
@@ -23,9 +36,9 @@ export const GetDrinks = (props: { dishId: number }) => {
 
   const setDrinkSuggestion = (): Drink | undefined => {
     if (drinks != undefined) {
-      if (props.dishId < 0 || props.dishId >= drinks.length) {
+      if (props.dishName < 0 || props.dishName >= drinks.length) {
         return drinks[0]
-      } else if (props.dishId === 1) {
+      } else if (props.dishName === 1) {
         return drinks[3]
       }
     }

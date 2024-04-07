@@ -1,16 +1,18 @@
+import { NavLink } from "react-router-dom";
 import { Item } from "../../service/Service"
 import './style.css'
 
 type UsingProps = {
     currentItem: Item | undefined,
+    callback: any
 }
 
 const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
-const ItemDisplayer = ({currentItem} : UsingProps) => {
-    const renderThis = !currentItem ? <></> 
-    :   <div className="item-displayer">
-            
+const ItemDisplayer = ({ currentItem, callback }: UsingProps) => {
+    const renderThis = !currentItem ? <></>
+        : <div className="item-displayer">
+
             {/* section title */}
             <div className="item-displayer__section-title">
                 <div><h1>VÄLJ DIN HUVUDRÄTT</h1></div>
@@ -29,13 +31,15 @@ const ItemDisplayer = ({currentItem} : UsingProps) => {
                         <p>{currentItem.description}</p>
                     </div>
                 </div>
-                
+
                 {/* our image */}
                 <img src={currentItem.imageUrl} alt="Huvudrätt" width="500px" />
             </div>
-            <button className="continue-button">GÅ VIDARE</button>
+            <NavLink to={`/drink/${trimTitle(currentItem.title)}`}>
+                <button className="continue-button" onClick={() => callback(trimTitle(currentItem.title))}>GÅ VIDARE</button>
+            </NavLink>
         </div>
-    
+
     return (
         renderThis
     )

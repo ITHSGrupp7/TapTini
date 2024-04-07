@@ -5,7 +5,7 @@ import ItemDisplayer from '../../components/ItemDisplayer/ItemDisplayer';
 import './style.css'
 
 
-const Homepage = () => {
+const Homepage = ({callback} : any) => {
     const [items, setItems] = useState<Item[] | undefined>(undefined);
     const [currentItem, setCurrentItem] = useState<Item>();
 
@@ -26,7 +26,7 @@ const Homepage = () => {
     return (
         <main className="content-wrapper">
             <ItemSelector items={items} setCurrentItem={setCurrentItem} />
-            <ItemDisplayer currentItem={currentItem} />
+            <ItemDisplayer currentItem={currentItem} callback={callback}/>
         </main>
     )
 }
