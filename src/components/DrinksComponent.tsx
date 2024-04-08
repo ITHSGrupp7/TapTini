@@ -47,7 +47,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
 
   const drinkItem = (drink: Drink) => (
     <div key={drink.idDrink} className="drink-choice">
-      <NavLink to={`/tempoutput/${props.dishName}/${drink.strDrink}`}>
+      <NavLink to="/tempoutput">
         <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback(drink.strDrink)} />
       </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
@@ -74,7 +74,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
             </div>
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
             <div className="btn-container">
-              <NavLink to={`/tempoutput/${props.dishName}/${setDrinkSuggestion()?.strDrink}`}>
+              <NavLink to="/tempoutput">
                 <button className="drink-btn" onClick={() => props.callback(setDrinkSuggestion()?.strDrink)}>Välj denna drink</button>
               </NavLink>
               <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>

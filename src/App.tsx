@@ -7,7 +7,6 @@ import { useState } from 'react'
 import TempOutput from './components/TempOutput'
 
 function App() {
-  // const [page, setPage] = useState(<Meny />)
   const [dish, setDish] = useState("")
   const [drink, setDrink] = useState("")
   const callbackDish = (dishName : string) => setDish(dishName)
@@ -20,8 +19,8 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Homepage callback={callbackDish}/>}/>
-        <Route path="/drink/:name" element={<GetDrinks dishName={dish} callback={callbackDrink}/>}/>
-        <Route path="/tempoutput/:dish/:drink" element={<TempOutput dishName={dish} drinkName={drink}/>}/>
+        <Route path="/drink" element={<GetDrinks dishName={dish} callback={callbackDrink}/>}/>
+        <Route path="/tempoutput" element={<TempOutput dishName={dish} drinkName={drink}/>}/>
       </Routes>
     </div>
   )
