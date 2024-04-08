@@ -1,27 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Homepage from './pages/Homepage/Homepage'
+
 import './App.css'
-import Meny from './Meny'
+import { Route, Routes } from 'react-router-dom'
+import { GetDrinks } from './components/DrinksComponent'
+import { useState } from 'react'
+import TempOutput from './components/TempOutput'
 
 function App() {
-  const [page, setPage] = useState(<Meny />)
+  const [dish, setDish] = useState("")
+  const [drink, setDrink] = useState("")
+  const callbackDish = (dishName : string) => setDish(dishName)
+  const callbackDrink = (drinkName : string) => setDrink(drinkName)
 
   return (
-    <>
-      <header>
-        <h2>Tap & Tini</h2>
-        <a href="/cart">
-          <span className="material-symbols-outlined">
-            shopping_cart
-          </span>
-        </a>
-      </header>
-
-      <main className='content'>
-        {page}
-      </main>
-    </>
+    <div className="page-wrapper">
+      <div className="header">
+        <img src="/logo.svg" alt="logo" />
+      </div>
+      <Routes>
+        <Route path="/" element={<Homepage callback={callbackDish}/>}/>
+        <Route path="/drink" element={<GetDrinks dishName={dish} callback={callbackDrink}/>}/>
+        <Route path="/tempoutput" element={<TempOutput dishName={dish} drinkName={drink}/>}/>
+      </Routes>
+    </div>
   )
 }
 

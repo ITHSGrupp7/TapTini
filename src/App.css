@@ -1,81 +1,41 @@
-header {
-  color: white;
-  background-color: darkslategray;
-  width: auto;
-  height: 4rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-}
-
-header a {
-  color: inherit;
-}
-
 :root {
-  background-color: slategray;
-}
-
-button {
-  border: unset;
-  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-  transition: transform, background-color, 0.25s;
-}
-
-button:hover {
-  transform: translateY(-0.15rem) scale(1.02);
-  background-color: lightblue;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
+  --font-default-color: #fff;
+  --font-hover-color: #E46D0E;
+  
+  --font-family-glory: 'Glory';
+  --font-family-bellota: "Bellota";
+  --font-family-bebas-neue: "Bebas Neue";
 }
 
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-.content {
-  color: white;
-  padding: 2rem;
-}
-
-.wrapper {
-  display: grid;
-  justify-content: center;
-  /* align-items: center; */
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.selector {
-  /* border: 1px solid red; */
+.page-wrapper {
+  background-color: rgb(79, 82, 90);
+  background-image: url(src/assets/images/tapas-bg.jpg);
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: var(--font-default-color);
+  min-height: 100vh;
+  
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  align-items: center;
 }
 
-.selector button {
-  padding: 0.5rem;
+.header {
+  padding: 2.5rem 1rem;
+  transition: transform ease 1s;
 }
 
-.display {
-  /* border: 1px solid red; */
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
+.header:hover {
+  cursor: pointer;
+  transform: scale(1.15) skew(-2deg, 2deg);
 }
 
-.display img {
-  width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-}
-
-.display button {
-  padding: 1rem;
-  margin-top: 2rem;
+.header:active {
+  transform: scale(1);
 }
