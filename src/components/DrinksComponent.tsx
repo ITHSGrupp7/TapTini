@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import './DrinksComponent.css'
+import { NavLink, useParams } from "react-router-dom";
 
-export const GetDrinks = (props: { dishName: number }) => {
+export const GetDrinks = (props: { dishName: string, callback: any }) => {
 
   type Drink = {
     strDrink: string;
@@ -11,24 +12,13 @@ export const GetDrinks = (props: { dishName: number }) => {
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  // Räkor
-
-  // Vegansk Jackfruit
-  
-  // Patatas Bravas
-  
-  // Tortilla Española
-  
-  // Champinjoner al Ajillo
-  
-  // Manchego Ost med Honung och Valnötter
+  const {name} = useParams() as {name : string}  
 
   useEffect(() => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass")
       .then((res) => res.json())
       .then((data) => {
-        let tempList: Drink[] = [data.drinks[5], data.drinks[10], data.drinks[15], data.drinks[55], data.drinks[65]]
-        console.log(tempList)
+        let tempList: Drink[] = [data.drinks[5], data.drinks[10], data.drinks[15], data.drinks[45], data.drinks[55], data.drinks[65]]
         setDrinks(tempList)
       })
 
@@ -36,17 +26,30 @@ export const GetDrinks = (props: { dishName: number }) => {
 
   const setDrinkSuggestion = (): Drink | undefined => {
     if (drinks != undefined) {
-      if (props.dishName < 0 || props.dishName >= drinks.length) {
-        return drinks[0]
-      } else if (props.dishName === 1) {
-        return drinks[3]
+      switch (props.dishName) {
+        case "Räkor":
+          return drinks[3]
+        case "Vegansk Jackfruit":
+          return drinks[0]
+        case "Patatas Bravas":
+          return drinks[1]
+        case "Tortilla Española":
+          return drinks[2]
+        case "Champinjoner al Ajillo":
+          return drinks[4]
+        case "Manchego Ost med Honung och Valnötter":
+          return drinks[5]
+        default:
+          return drinks[0]
       }
     }
   }
 
   const drinkItem = (drink: Drink) => (
     <div key={drink.idDrink} className="drink-choice">
-      <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => console.log(drink.strDrink)}/>
+      <NavLink to={`/tempoutput/${props.dishName}/${drink.strDrink}`}>
+        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback(drink.strDrink)} />
+      </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
     </div>
   )
@@ -54,25 +57,26 @@ export const GetDrinks = (props: { dishName: number }) => {
   return (
     <>
       {
-        
+
         showAll ?
-          
+
           <div className="drink-container">
             <h1>Välj din cocktail!</h1>
             {drinks?.map(drink => drinkItem(drink))}
           </div>
           :
           <div className="drink-container">
-            <h1>Perfekt cocktail till ditt val:</h1>
+            <h1>Perfekt cocktail till {name}:</h1>
             <div className="image-container">
               <a href="#">
                 <img src={setDrinkSuggestion()?.strDrinkThumb} />
               </a>
             </div>
-            {/* {drinks?.map(drink => <div key={drink.idDrink}><p>{drink?.strDrink}</p><img src={drink?.strDrinkThumb}/></div>)} */}
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
             <div className="btn-container">
-              <button className="drink-btn">Välj denna drink</button>
+              <NavLink to={`/tempoutput/${props.dishName}/${setDrinkSuggestion()?.strDrink}`}>
+                <button className="drink-btn" onClick={() => props.callback(setDrinkSuggestion()?.strDrink)}>Välj denna drink</button>
+              </NavLink>
               <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
             </div>
           </div>

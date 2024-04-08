@@ -1,15 +1,17 @@
 import Homepage from './pages/Homepage/Homepage'
-import TestApp from './TestApp'
 
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { GetDrinks } from './components/DrinksComponent'
 import { useState } from 'react'
+import TempOutput from './components/TempOutput'
 
 function App() {
   // const [page, setPage] = useState(<Meny />)
   const [dish, setDish] = useState("")
-  const callback = (dishName : string) => setDish(dishName)
+  const [drink, setDrink] = useState("")
+  const callbackDish = (dishName : string) => setDish(dishName)
+  const callbackDrink = (drinkName : string) => setDrink(drinkName)
 
   return (
     <div className="page-wrapper">
@@ -17,8 +19,9 @@ function App() {
         <img src="/logo.svg" alt="logo" />
       </div>
       <Routes>
-        <Route path="/" element={<Homepage callback={callback}/>}/>
-        <Route path="/drink/:name" element={<GetDrinks dishName={1} />}/>
+        <Route path="/" element={<Homepage callback={callbackDish}/>}/>
+        <Route path="/drink/:name" element={<GetDrinks dishName={dish} callback={callbackDrink}/>}/>
+        <Route path="/tempoutput/:dish/:drink" element={<TempOutput dishName={dish} drinkName={drink}/>}/>
       </Routes>
     </div>
   )
