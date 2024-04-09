@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import './DrinksComponent.css'
 import { NavLink, useParams } from "react-router-dom";
+import {Drink} from "../service/Service"
 
 export const GetDrinks = (props: { dishName: string, callback: any }) => {
 
-  type Drink = {
-    strDrink: string;
-    strDrinkThumb: string;
-    idDrink: string;
-  }
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
 
@@ -19,6 +15,16 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
       .then((res) => res.json())
       .then((data) => {
         let tempList: Drink[] = [data.drinks[5], data.drinks[10], data.drinks[15], data.drinks[45], data.drinks[55], data.drinks[65]]
+        let prices: number[] = [119, 99, 115, 125, 135, 85]
+        if(tempList.length == prices.length) {
+          for(let i = 0; i<tempList.length; i++) {
+            tempList[i].price = prices[i]
+          }
+        } else {
+          for(let i = 0; i<tempList.length; i++) {
+            tempList[i].price = 135
+          }
+        }
         setDrinks(tempList)
       })
 
@@ -48,7 +54,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
   const drinkItem = (drink: Drink) => (
     <div key={drink.idDrink} className="drink-choice">
       <NavLink to="/tempoutput">
-        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback(drink.strDrink)} />
+        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback(drink)} />
       </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
     </div>
@@ -75,7 +81,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
             <div className="btn-container">
               <NavLink to="/tempoutput">
-                <button className="drink-btn" onClick={() => props.callback(setDrinkSuggestion()?.strDrink)}>Välj denna drink</button>
+                <button className="drink-btn" onClick={() => props.callback(setDrinkSuggestion())}>Välj denna drink</button>
               </NavLink>
               <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
             </div>

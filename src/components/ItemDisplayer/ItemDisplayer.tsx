@@ -36,7 +36,7 @@ const ItemDisplayer = ({ currentItem, callback }: UsingProps) => {
                 <img src={currentItem.imageUrl} alt="Huvudrätt" width="500px" />
             </div>
             <NavLink to="/drink">
-                <button className="continue-button" onClick={() => callback(trimTitle(currentItem.title))}>GÅ VIDARE</button>
+                <button className="continue-button" onClick={() => callback(currentItem)}>GÅ VIDARE</button>
             </NavLink>
         </div>
 
