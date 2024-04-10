@@ -87,7 +87,7 @@
     font-size: var(--font-size-paragraph);
 }
 
-.continue-button {
+.navigation-button {
     background-color: rgb(239, 154,27);
     background: linear-gradient(180deg, rgb(179, 115, 21) 40%, rgb(179,144,92) 100%);
     border:none;
@@ -102,12 +102,12 @@
     transition: transform ease .9s;
 }
 
-.continue-button:hover {
+.navigation-button:hover {
     background: linear-gradient(25deg, rgb(170, 115, 21) 40%, rgb(179, 144, 02) 100%);
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.37);
 }
 
-.continue-button:active {
+.navigation-button:active {
     color: #682b07;
     -webkit-box-shadow: inset 1px 1px 10px #8b4308;
     -moz-box-shadow:    inset 1px 1px 10px #8b4308;

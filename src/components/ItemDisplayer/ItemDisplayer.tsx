@@ -16,7 +16,7 @@ const ItemDisplayer = ({ currentItem, callback }: UsingProps) => {
             {/* section title */}
             <div className="item-displayer__section-title">
                 <div><h1>VÄLJ DIN HUVUDRÄTT</h1></div>
-                <div className="item-displayer__basket"><a href="#"></a></div>
+                <div className="item-displayer__basket"><a href="/cart"></a></div>
             </div>
 
             <div className="item-displayer__item">
@@ -35,8 +35,8 @@ const ItemDisplayer = ({ currentItem, callback }: UsingProps) => {
                 {/* our image */}
                 <img src={currentItem.imageUrl} alt="Huvudrätt" width="500px" />
             </div>
-            <NavLink to="/drink">
-                <button className="continue-button" onClick={() => callback(trimTitle(currentItem.title))}>GÅ VIDARE</button>
+            <NavLink to="/sides">
+                <button className="navigation-button" onClick={() => callback(trimTitle(currentItem.title))}>GÅ VIDARE</button>
             </NavLink>
         </div>
 

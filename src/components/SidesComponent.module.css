@@ -1,0 +1,40 @@
+:root {
+    --font-family-glory: 'Glory';
+    --font-family-bellota: "Bellota";
+    --font-family-bebas-neue: "Bebas Neue";
+    --font-weight-section-title: 200;
+    --font-weight-items: 400;
+    --font-size-item: 1.37rem;
+}
+
+.navlink-item {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.sidesButton  {
+    flex: 1;
+    display: flex;
+    justify-content: space-between; /* To push title to left and price to right */
+    align-items: center; /* To vertically center the content */
+    /* width: 110%; */
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    margin-bottom: 5px;
+}
+
+.sidesButton span:nth-child(2){
+    margin-left: 2rem;
+}
+
+.sidesButton > * {
+    transition: transform .7s ease-in-out, translate .5s ease-in-out;
+}
+
+.sidesButton:hover > * {
+    transform: translate(0%, -18%);
+    color: #E46D0E;
+}
+
