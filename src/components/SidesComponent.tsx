@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { addToCart } from '../state/cart/cartSlice';
 import styles from './SidesComponent.module.css';
 import ItemSelector from './ItemSelector/ItemSelector';
+import { Item } from '../service/Service';
 
 type Side = {
     name: string;
@@ -31,11 +32,19 @@ const SidesComponent = (props: { callback: any }) => {
     const handleItemClick = (item: Side
     ) => {
         dispatch(addToCart({ // Dispatch addToCart action with selected item data as payload
-            // id: Math.random(), // Generate a random id for the item
             name: item.name,
             price: item.price
         }));
     };
+
+    // export type Item = {
+    //     _id: string,
+    //     title: string,
+    //     imageUrl?: string,
+    //     description?: string,
+    //     price: number,
+    //     quantity?: number
+    // }
 
     return (
         <div>
@@ -46,8 +55,9 @@ const SidesComponent = (props: { callback: any }) => {
                         Array.isArray(sideItems) &&
                         sideItems.map((item, index) => (
                             // <button className={styles.sidesButton} key={index} onClick={() => handleItemClick(item)}>
-                            <NavLink to="/drink" className={"navlink-item"}>
-                                <button className={styles.sidesButton} key={index} onClick={() => props.callback(item.name)}>
+                            <NavLink to="/drink" className={styles["navlink-item"]}>
+                                <button className={styles.sidesButton} key={index} onClick={() => props
+                                    .callback({ _id: index, title: item.name, price: item.price})}>
                                     <span className="item__title">{item.name}</span>
                                     <span className="item__title">{item.price}kr</span>
                                 </button>

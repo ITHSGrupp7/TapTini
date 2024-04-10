@@ -1,9 +1,10 @@
 export type Item = {
     _id: string,
     title: string,
-    imageUrl: string,
-    description: string,
-    price: number
+    imageUrl?: string,
+    description?: string,
+    price: number,
+    quantity?: number
 }
 
 export const fetchData = async (url: string) => {

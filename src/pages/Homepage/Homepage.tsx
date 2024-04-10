@@ -4,6 +4,7 @@ import ItemSelector from '../../components/ItemSelector/ItemSelector';
 import ItemDisplayer from '../../components/ItemDisplayer/ItemDisplayer';
 import './style.css'
 
+const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
 const Homepage = ({callback} : any) => {
     const [items, setItems] = useState<Item[] | undefined>(undefined);
@@ -15,8 +16,10 @@ const Homepage = ({callback} : any) => {
             const itemsData = fetchData("https://iths-2024-recept-grupp7-86oop6.reky.se/recipes");
 
             itemsData.then((data : Item[]) => {
-                setItems(data);
-                setCurrentItem(data[0])
+                const trimmedItems = data.map((item: Item) =>{
+                    return {...item, title: trimTitle(item.title)}})
+                setItems(trimmedItems);
+                setCurrentItem(trimmedItems[0])
             })
         } catch(error) {
             console.error("Network error response");
