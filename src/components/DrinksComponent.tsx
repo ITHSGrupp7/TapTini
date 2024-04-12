@@ -1,24 +1,39 @@
 import { useEffect, useState } from "react";
 import './DrinksComponent.css'
 import { NavLink, useParams } from "react-router-dom";
+import { Item } from "../service/Service";
 
-export const GetDrinks = (props: { dishName: string, callback: any }) => {
+const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
+
+export const GetDrinks = (props: { dishName: string | undefined, callback: (item : Item | undefined) => void }) => {
 
   type Drink = {
     strDrink: string;
     strDrinkThumb: string;
     idDrink: string;
+    price: number;
   }
+
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  const {name} = useParams() as {name : string}  
+  // const {name} = useParams() as {name : string}  
 
   useEffect(() => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass")
       .then((res) => res.json())
       .then((data) => {
         let tempList: Drink[] = [data.drinks[5], data.drinks[10], data.drinks[15], data.drinks[45], data.drinks[55], data.drinks[65]]
+        let prices: number[] = [119, 99, 115, 125, 135, 85]
+        if(tempList.length == prices.length) {
+          for(let i = 0; i<tempList.length; i++) {
+            tempList[i].price = prices[i]
+          }
+        } else {
+          for(let i = 0; i<tempList.length; i++) {
+            tempList[i].price = 135
+          }
+        }
         setDrinks(tempList)
       })
 
@@ -26,7 +41,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
 
   const setDrinkSuggestion = (): Drink | undefined => {
     if (drinks != undefined) {
-      switch (props.dishName) {
+      switch (trimTitle(props.dishName ?? "")) {
         case "Räkor":
           return drinks[3]
         case "Vegansk Jackfruit":
@@ -47,8 +62,8 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
 
   const drinkItem = (drink: Drink) => (
     <div key={drink.idDrink} className="drink-choice">
-      <NavLink to="/tempoutput">
-        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback(drink.strDrink)} />
+      <NavLink to="/cart">
+        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => props.callback({_id: drink.idDrink, title: drink.strDrink, price: drink.price})} />
       </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
     </div>
@@ -66,7 +81,7 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
           </div>
           :
           <div className="drink-container">
-            <h1>Perfekt cocktail till {name}:</h1>
+            <h1>Perfekt cocktail till {props.dishName}:</h1>
             <div className="image-container">
               <a href="#">
                 <img src={setDrinkSuggestion()?.strDrinkThumb} />
@@ -74,8 +89,8 @@ export const GetDrinks = (props: { dishName: string, callback: any }) => {
             </div>
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
             <div className="btn-container">
-              <NavLink to="/tempoutput">
-                <button className="drink-btn" onClick={() => props.callback(setDrinkSuggestion()?.strDrink)}>Välj denna drink</button>
+              <NavLink to="/cart">
+                <button className="drink-btn" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
               </NavLink>
               <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
             </div>

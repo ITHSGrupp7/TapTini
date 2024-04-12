@@ -12,6 +12,7 @@ const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
  
 
 const ItemSelector = ({items, setCurrentItem} : UsingProps) => {
+
     return (
         <div className="item-selector">
             <h1 className="item-selector__sectionTitle">MENY</h1>
@@ -21,7 +22,7 @@ const ItemSelector = ({items, setCurrentItem} : UsingProps) => {
                 items.map((item: Item) => (
                     <button className="item" onClick= {() => setCurrentItem(item)} key={item._id}>
                         <span className="item__icon"></span>
-                        <span className="item__title">{trimTitle(item.title)}</span>
+                        <span className="item__title">{item.title}</span>
                     </button>
                 ))}
             </section>

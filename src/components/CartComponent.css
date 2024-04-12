@@ -1,0 +1,16 @@
+.cartTable{
+    background-color: rgba(0, 0, 0, 0.5);
+    color:whitesmoke;
+    text-align: center;
+    vertical-align: baseline;
+
+}
+
+.cartTableBody{
+    text-align:left;
+}
+
+
+.cartCost{
+    background-color: rgba(255, 124, 1, 0.5);
+}

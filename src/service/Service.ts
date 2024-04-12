@@ -1,9 +1,16 @@
 export type Item = {
     _id: string,
     title: string,
-    imageUrl: string,
-    description: string,
-    price: number
+    imageUrl?: string,
+    description?: string,
+    price: number,
+    quantity?: number
+}
+
+export type CartItem = {
+    dish?: Item,
+    sides?: Item[],
+    drink?: Item,
 }
 
 export const fetchData = async (url: string) => {

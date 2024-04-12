@@ -4,21 +4,24 @@ import ItemSelector from '../../components/ItemSelector/ItemSelector';
 import ItemDisplayer from '../../components/ItemDisplayer/ItemDisplayer';
 import './style.css'
 
+const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
-const Homepage = ({callback} : any) => {
+const Homepage = (props: {callback: (item : Item | undefined) => void}) => {
     const [items, setItems] = useState<Item[] | undefined>(undefined);
     const [currentItem, setCurrentItem] = useState<Item>();
 
     useEffect(() => {
         try {
-            // try fetching data, we call our fetchData function
             const itemsData = fetchData("https://iths-2024-recept-grupp7-86oop6.reky.se/recipes");
 
-            itemsData.then((data : Item[]) => {
-                setItems(data);
-                setCurrentItem(data[0])
+            itemsData.then((data: Item[]) => {
+                const trimmedItems = data.map((item: Item) => {
+                    return { ...item, title: trimTitle(item.title) }
+                })
+                setItems(trimmedItems);
+                setCurrentItem(trimmedItems[0])
             })
-        } catch(error) {
+        } catch (error) {
             console.error("Network error response");
         }
     }, [])
@@ -26,7 +29,7 @@ const Homepage = ({callback} : any) => {
     return (
         <main className="content-wrapper">
             <ItemSelector items={items} setCurrentItem={setCurrentItem} />
-            <ItemDisplayer currentItem={currentItem} callback={callback}/>
+            <ItemDisplayer currentItem={currentItem} callback={props.callback} />
         </main>
     )
 }

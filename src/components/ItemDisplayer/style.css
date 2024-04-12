@@ -17,7 +17,7 @@
  .item-displayer__section-title {
     display: flex;
     justify-content: space-around;
-    padding-left: 4.8rem;
+    /* padding-left: 4.8rem; */
  }
 
  .item-displayer__section-title h1 {
@@ -25,7 +25,7 @@
     font-weight: var(--font-weight-section-title);
  }
 
- .item-displayer__basket {
+ /* .item-displayer__basket {
    background-image: url(src/assets/images/basket-icon-40.png);
    background-repeat: no-repeat; 
    background-position: center;
@@ -34,7 +34,7 @@
    min-height: 40px;
    cursor: pointer;
    transition: transform ease .4s;
- }
+ } */
 
  .item-displayer__basket:hover {
     transform: scale(1.15);
@@ -100,6 +100,7 @@
     letter-spacing: 0.09rem;
     padding: .5rem;
     transition: transform ease .9s;
+    width: 100%;
 }
 
 .navigation-button:hover {
