@@ -5,8 +5,7 @@ import { Item } from "../service/Service";
 
 const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
-
-export const GetDrinks = (props: { dishName: string | undefined, callback: any }) => {
+export const GetDrinks = (props: { dishName: string | undefined, callback: (item : Item | undefined) => void }) => {
 
   type Drink = {
     strDrink: string;
@@ -14,10 +13,11 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: any }
     idDrink: string;
     price: number;
   }
+
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  const {name} = useParams() as {name : string}  
+  // const {name} = useParams() as {name : string}  
 
   useEffect(() => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass")
@@ -81,7 +81,7 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: any }
           </div>
           :
           <div className="drink-container">
-            <h1>Perfekt cocktail till {name}:</h1>
+            <h1>Perfekt cocktail till {props.dishName}:</h1>
             <div className="image-container">
               <a href="#">
                 <img src={setDrinkSuggestion()?.strDrinkThumb} />
@@ -90,7 +90,7 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: any }
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
             <div className="btn-container">
               <NavLink to="/cart">
-                <button className="drink-btn" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink, title: setDrinkSuggestion()?.strDrink, price: setDrinkSuggestion()?.price})}>Välj denna drink</button>
+                <button className="drink-btn" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
               </NavLink>
               <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
             </div>

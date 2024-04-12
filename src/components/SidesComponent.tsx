@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
-import { addToCart } from '../state/cart/cartSlice';
-import styles from './SidesComponent.module.css';
+
+// import { useDispatch } from 'react-redux'
+// import { addToCart } from '../state/cart/cartSlice';
+import './SidesComponent.css';
 import ItemSelector from './ItemSelector/ItemSelector';
-import { Item } from '../service/Service';
+import { Item, CartItem } from '../service/Service';
 
 type Side = {
     name: string;
     price: number;
+    isSelected?: boolean
 };
 
 const sideItems: Side[] = [
@@ -20,48 +22,57 @@ const sideItems: Side[] = [
     { name: "Skaldjur", price: 159 },
 ];
 
+const SidesComponent = (props: { callback: (item: Item[] | undefined) => void }) => {
 
-// interface Props {
-//     sideItems: Sides[];
-//     callback: (name: string) => void; // Define callback prop
-// }
+    const [items, setItems] = useState<Side[]>(sideItems)
 
-const SidesComponent = (props: { callback: any }) => {
-    const dispatch = useDispatch(); // Initialize useDispatch hook
+    function onItemClick(index: number): void {
 
-    const handleItemClick = (item: Side
-    ) => {
-        dispatch(addToCart({ // Dispatch addToCart action with selected item data as payload
-            name: item.name,
-            price: item.price
-        }));
-    };
+        const newItems: Side[] = items
+        newItems[index].isSelected = !newItems[index].isSelected
 
-    // export type Item = {
-    //     _id: string,
-    //     title: string,
-    //     imageUrl?: string,
-    //     description?: string,
-    //     price: number,
-    //     quantity?: number
-    // }
+        // console.log(`${newItems[index].name} ${newItems[index].isSelected ? "" : "not"} selected`)
+
+        setItems([...newItems])
+    }
+
+    // const dispatch = useDispatch(); // Initialize useDispatch hook
+
+    // const handleItemClick = (item: Side
+    // ) => {
+    //     dispatch(addToCart({ // Dispatch addToCart action with selected item data as payload
+    //         name: item.name,
+    //         price: item.price
+    //     }));
+    // };
 
     return (
         <div>
             {/* <ItemSelector items={sideItems}  /> */}
             <div className="item-selector">
                 <section className="item-selector__items-group">
-                    {sideItems &&
-                        Array.isArray(sideItems) &&
-                        sideItems.map((item, index) => (
+                    {
+                        items &&
+                        Array.isArray(items) &&
+                        items.map((item, index) => (
                             // <button className={styles.sidesButton} key={index} onClick={() => handleItemClick(item)}>
-                            <NavLink to="/drink" className={styles["navlink-item"]}>
-                                <button className={styles.sidesButton} key={index} onClick={() => props
-                                    .callback({ _id: index, title: item.name, price: item.price})}>
-                                    <span className="item__title">{item.name}</span>
-                                    <span className="item__title">{item.price}kr</span>
-                                </button>
-                            </NavLink>
+                            <button className={"sidesButton"} key={index} onClick={() => onItemClick(index)}
+                                style={{ borderRadius: 8 }}>
+                                <span className="item__title">{item.name}</span>
+                                <span className="item__title">{item.price}kr</span>
+                                <span className="material-symbols-outlined checkmark" 
+                                    style={{
+                                        position: "absolute",
+                                        // transform: "translate(-50%, -33%)",
+                                        // marginLeft: "-50%",
+                                        // backgroundColor: "white",
+                                        textShadow: "2px 2px 2px black",
+                                        // borderRadius: 100,
+                                        color: "orange",
+                                        fontSize: 28,
+                                        display: items[index].isSelected ? "inline" : "none"
+                                    }}>check_circle</span>
+                            </button>
                         ))}
                 </section>
             </div>
@@ -70,9 +81,22 @@ const SidesComponent = (props: { callback: any }) => {
                 <button className="navigation-button">TILLBAKA</button>
             </NavLink>
 
-            {/* <NavLink to="/drink">
-                <button className="navigation-button">GÅ VIDARE</button>
-            </NavLink> */}
+            <NavLink to="/drink">
+                <button className="navigation-button" onClick={() => {
+                    const selectedItems = items.filter(side => side.isSelected)
+                    const sides: Item[] = selectedItems.map(side => {
+                        return {
+                            _id: items.indexOf(side).toString(),
+                            title: side.name,
+                            price: side.price,
+                        }
+                    }
+                    )
+
+                    props.callback(sides)
+
+                }}>GÅ VIDARE</button>
+            </NavLink>
         </div>
     );
 };

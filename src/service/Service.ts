@@ -7,6 +7,12 @@ export type Item = {
     quantity?: number
 }
 
+export type CartItem = {
+    dish?: Item,
+    sides?: Item[],
+    drink?: Item,
+}
+
 export const fetchData = async (url: string) => {
     const response = await fetch(url);
     if (!response.ok) {

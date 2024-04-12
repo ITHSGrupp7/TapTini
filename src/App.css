@@ -13,9 +13,9 @@
   box-sizing: border-box;
 }
 
-.page-wrapper>div {
+/* .page-wrapper>div {
   border: 2px dashed dodgerblue;
-}
+} */
 
 .page-wrapper {
   background-color: rgb(79, 82, 90);
