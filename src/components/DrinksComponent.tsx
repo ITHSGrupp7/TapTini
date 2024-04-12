@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import './DrinksComponent.css'
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Item } from "../service/Service";
 
 const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
@@ -16,8 +16,6 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: (item
 
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
-
-  // const {name} = useParams() as {name : string}  
 
   useEffect(() => {
     fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Cocktail_glass")

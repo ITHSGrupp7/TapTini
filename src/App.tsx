@@ -3,15 +3,13 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { GetDrinks } from './components/DrinksComponent'
 import { useState } from 'react'
-// import TempOutput from './components/TempOutput'
 import SidesComponent from './components/SidesComponent'
 import CartComponent from './components/CartComponent'
-import { Item, CartItem } from './service/Service'
+import { Item } from './service/Service'
 
 function App() {
   const [dish, setDish] = useState<Item | undefined>()
   const [drink, setDrink] = useState<Item | undefined>()
-  // const [side, setSide] = useState<Item | undefined>()
   const [sides, setSides] = useState<Item[] | undefined>([])
 
   return (
@@ -27,7 +25,6 @@ function App() {
         <Route path="/sides" element={<SidesComponent callback={setSides} />} />
         <Route path="/drink" element={<GetDrinks dishName={dish?.title} callback={setDrink} />} />
         <Route path="/cart" element={<CartComponent cartItem={{dish: dish, sides: sides, drink: drink}} />} />
-        {/* <Route path="/cart" element={<CartComponent dish={dish!} sides={side!} drink={drink!} />} /> */}
       </Routes>
 
       <div id='cart' className='cart-popup cart-hidden'>

@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
-// import { useDispatch } from 'react-redux'
-// import { addToCart } from '../state/cart/cartSlice';
 import './SidesComponent.css';
-import ItemSelector from './ItemSelector/ItemSelector';
-import { Item, CartItem } from '../service/Service';
+import { Item } from '../service/Service';
 
 type Side = {
     name: string;
@@ -27,12 +23,8 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
     const [items, setItems] = useState<Side[]>(sideItems)
 
     function onItemClick(index: number): void {
-
         const newItems: Side[] = items
         newItems[index].isSelected = !newItems[index].isSelected
-
-        // console.log(`${newItems[index].name} ${newItems[index].isSelected ? "" : "not"} selected`)
-
         setItems([...newItems])
     }
 
@@ -48,28 +40,18 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
 
     return (
         <div>
-            {/* <ItemSelector items={sideItems}  /> */}
             <div className="item-selector">
                 <section className="item-selector__items-group">
                     {
                         items &&
                         Array.isArray(items) &&
                         items.map((item, index) => (
-                            // <button className={styles.sidesButton} key={index} onClick={() => handleItemClick(item)}>
                             <button className={"sidesButton"} key={index} onClick={() => onItemClick(index)}
                                 style={{ borderRadius: 8 }}>
                                 <span className="item__title">{item.name}</span>
                                 <span className="item__title">{item.price}kr</span>
                                 <span className="material-symbols-outlined checkmark" 
                                     style={{
-                                        position: "absolute",
-                                        // transform: "translate(-50%, -33%)",
-                                        // marginLeft: "-50%",
-                                        // backgroundColor: "white",
-                                        textShadow: "2px 2px 2px black",
-                                        // borderRadius: 100,
-                                        color: "orange",
-                                        fontSize: 28,
                                         display: items[index].isSelected ? "inline" : "none"
                                     }}>check_circle</span>
                             </button>
@@ -90,8 +72,7 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
                             title: side.name,
                             price: side.price,
                         }
-                    }
-                    )
+                    })
 
                     props.callback(sides)
 

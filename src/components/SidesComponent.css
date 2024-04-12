@@ -38,6 +38,10 @@
 }
 
 .checkmark {
+    position: absolute;
+    color: orange;
+    text-shadow: 2px 2px 2px black;
+    font-size: 20pt;
     transform: translate(-50%, -33%);
 }
 

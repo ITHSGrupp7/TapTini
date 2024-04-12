@@ -1,6 +1,6 @@
 // import { useSelector } from "react-redux"
 // import { RootState } from "../state/store"
-import { CartItem, Item } from "../service/Service";
+import { CartItem } from "../service/Service";
 import "./CartComponent.css"
 // import { useDispatch } from 'react-redux';
 
@@ -13,21 +13,6 @@ const CartComponent = (props: { cartItem: CartItem }) => {
 
     return (<div className="cartTable">
         <h2>Cart</h2>
-        <div>
-            {/* <p>{props.dish.title}</p>
-            <p>{props.sides.title}</p>
-            <p>{props.drink.title}</p> */}
-            {/* {cart.map((item, index) => (
-                <div key={index}>
-                    <span>{item.name}</span>
-                    <span>{item.price}</span>
-                    Render other properties of CartItem as needed
-                </div>
-            ))} */}
-        </div>
-        {/* <h3>Totalpris:</h3>
-        <p>{props.dish.price + props.sides.price + props.drink.price} kr</p> */}
-
 
         <table >
             <thead className="cartTableHead">
