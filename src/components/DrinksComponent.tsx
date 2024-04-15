@@ -70,7 +70,7 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: (item
   return (
     <>
       {
-
+          
         showAll ?
 
           <div className="drink-container">
@@ -86,11 +86,11 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: (item
               </a>
             </div>
             <h2>{setDrinkSuggestion()?.strDrink}</h2>
-            <div className="btn-container">
+            <div className="">
               <NavLink to="/cart">
-                <button className="drink-btn" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
+                <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
               </NavLink>
-              <button className="drink-btn" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
+              <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
             </div>
           </div>
       }

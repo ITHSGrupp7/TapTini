@@ -1,5 +1,6 @@
 // import { useSelector } from "react-redux"
 // import { RootState } from "../state/store"
+import { NavLink } from "react-router-dom";
 import { CartItem } from "../service/Service";
 import "./CartComponent.css"
 // import { useDispatch } from 'react-redux';
@@ -10,6 +11,7 @@ const CartComponent = (props: { cartItem: CartItem }) => {
     // const dispatch = useDispatch();
 
     const sidesPrice: number = props.cartItem.sides?.reduce((totalPrice, side) => totalPrice + side.price, 0) || 0
+
 
     return (<div className="cartTable">
         <h2>Cart</h2>
@@ -29,7 +31,7 @@ const CartComponent = (props: { cartItem: CartItem }) => {
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
                 </tr>
                 <tr>
-                    <td>{props.cartItem.sides ? props.cartItem.sides.map(side => <p>{side.title}</p>) : null}
+                    <td>{props.cartItem.sides ? props.cartItem.sides.map(side => <p key={side._id}>{side.title}</p>) : null}
                     </td>
                     {/* <td>{props.cartItem.sides?.reduce<number>((acc: Item, curr: Item) => side.price + prev.price)} kr</td> */}
                     <td>{sidesPrice} kr</td>
@@ -47,6 +49,10 @@ const CartComponent = (props: { cartItem: CartItem }) => {
                 </tr>
             </tbody>
         </table>
+
+        <NavLink to="/orderconfirmation">
+                <button className="navigation-button">BESTÄLL</button>
+        </NavLink>
 
     </div>);
 };

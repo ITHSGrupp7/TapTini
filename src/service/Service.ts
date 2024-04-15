@@ -2,6 +2,7 @@ export type Item = {
     _id: string,
     title: string,
     imageUrl?: string,
+    timeInMins?: number,
     description?: string,
     price: number,
     quantity?: number
