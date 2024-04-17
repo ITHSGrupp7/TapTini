@@ -26,11 +26,9 @@
     width: 100%;
     height: 100%;
     padding: 1rem;
-
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 2rem;
+    justify-content: space-between;
 }
 
 .item {
@@ -38,6 +36,9 @@
     border: none;
     cursor: pointer;
     display: inline-flex;
+    padding: 10px;
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 .item__icon {

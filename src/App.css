@@ -30,6 +30,12 @@
   align-items: center;
 }
 
+.item-selector-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .header {
   padding: 1rem;
   display: flex;

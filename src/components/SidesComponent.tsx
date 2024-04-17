@@ -10,12 +10,12 @@ type Side = {
 };
 
 const sideItems: Side[] = [
-    { name: "Aioli", price: 79 },
-    { name: "Patatas Bravas", price: 129 },
-    { name: "Gazpacho", price: 99 },
-    { name: "Albondigas", price: 49 },
-    { name: "Marinerade grönsaker", price: 89 },
-    { name: "Skaldjur", price: 159 },
+    { name: "Aioli", price: 79, isSelected: false },
+    { name: "Patatas Bravas", price: 129, isSelected: false },
+    { name: "Gazpacho", price: 99, isSelected: false },
+    { name: "Albondigas", price: 49, isSelected: false },
+    { name: "Marinerade grönsaker", price: 89, isSelected: false },
+    { name: "Skaldjur", price: 159, isSelected: false },
 ];
 
 const SidesComponent = (props: { callback: (item: Item[] | undefined) => void }) => {
@@ -39,7 +39,7 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
     // };
 
     return (
-        <div>
+        <div className='item-selector-wrapper'>
             <div className="item-selector">
                 <section className="item-selector__items-group">
                     {
@@ -50,7 +50,7 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
                                 style={{ borderRadius: 8 }}>
                                 <span className="item__title">{item.name}</span>
                                 <span className="item__title">{item.price}kr</span>
-                                <span className="material-symbols-outlined checkmark" 
+                                <span className="material-symbols-outlined checkmark"
                                     style={{
                                         display: items[index].isSelected ? "inline" : "none"
                                     }}>check_circle</span>
