@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import './DrinksComponent.css'
 import { NavLink } from "react-router-dom";
 import { Item } from "../service/Service";
@@ -71,30 +72,68 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: (item
     <>
       {
           
-        showAll ?
+          showAll ?
+          
+          // <div className="drink-container">
+          //   <h1>Välj din cocktail!</h1>
+          //   {drinks?.map(drink => drinkItem(drink))}
+          // </div>
+          // :
+          // <div className="drink-container">
+          //   <h1>Perfekt cocktail till {props.dishName}:</h1>
+          
+          //   <div className="image-container">
+          //     <header>
+          //     <a href="#">
+          //       <img src={setDrinkSuggestion()?.strDrinkThumb} />
+          //     </a>
+          //     </header>
+          //   </div>
+          
+          //   <h2>{setDrinkSuggestion()?.strDrink}</h2>
+          //   <div className="">
+          //     <NavLink to="/cart">
+          //       <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
+          //     </NavLink>
+          //     <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
+          //   </div>
+          // </div>
+         
+             <div> <h1>Välj din cocktail!</h1>
+                <div className="productlist__wrapper">
+                  <div className="product__list">
+                       {drinks?.map(drink => drinkItem(drink))}
+                  </div> 
+               </div>
+            </div>
+             :
+             <article  style={{ '--isRecommended': 'true' } as any}>
+             <div className="product">
+               <header className="product__art">
+                       <img src={setDrinkSuggestion()?.strDrinkThumb} />
+               </header>
+                 <h2 className="product__title">
+                    Perfekt cocktail till {props.dishName}
+                 </h2>
+               <div className="product__infos">
+                
+                 <NavLink to="/cart">
+                  <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
+                 </NavLink>
+                  <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
+              
+               </div>
+             </div>
+             </article>
+              
+           
+        
 
-          <div className="drink-container">
-            <h1>Välj din cocktail!</h1>
-            {drinks?.map(drink => drinkItem(drink))}
-          </div>
-          :
-          <div className="drink-container">
-            <h1>Perfekt cocktail till {props.dishName}:</h1>
-            <div className="image-container">
-              <a href="#">
-                <img src={setDrinkSuggestion()?.strDrinkThumb} />
-              </a>
-            </div>
-            <h2>{setDrinkSuggestion()?.strDrink}</h2>
-            <div className="">
-              <NavLink to="/cart">
-                <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
-              </NavLink>
-              <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
-            </div>
-          </div>
+
+      
       }
     </>
+      
   );
 }
 
