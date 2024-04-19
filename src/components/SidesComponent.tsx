@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidesComponent.css';
 import { Item } from '../service/Service';
@@ -23,10 +23,16 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
     const [items, setItems] = useState<Side[]>(sideItems)
 
     function onItemClick(index: number): void {
-        const newItems: Side[] = items
+        const newItems: Side[] = [...items]
         newItems[index].isSelected = !newItems[index].isSelected
         setItems([...newItems])
     }
+
+    useEffect(() => {
+        console.log(sideItems)
+        setItems(sideItems.map(item => { return { ...item, isSelected: false } }))
+    }, [])
+
 
     // const dispatch = useDispatch(); // Initialize useDispatch hook
 
@@ -73,7 +79,7 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
                             price: side.price,
                         }
                     })
-
+                    setItems(sideItems)
                     props.callback(sides)
 
                 }}>GÅ VIDARE</button>

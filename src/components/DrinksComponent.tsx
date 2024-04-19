@@ -40,7 +40,7 @@ export const GetDrinks = (props: { dishName: string | undefined, callback: (item
 
   const setDrinkSuggestion = (): Drink | undefined => {
     if (drinks != undefined) {
-      switch (trimTitle(props.dishName ?? "")) {
+      switch (props.dishName ?? "") {
         case "Räkor":
           return drinks[3]
         case "Vegansk Jackfruit":
