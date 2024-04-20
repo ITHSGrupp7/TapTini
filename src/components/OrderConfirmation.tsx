@@ -1,4 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import CartComponent from "./CartComponent";
+import { CartItem } from "../service/Service";
+import { useState } from "react";
 
 
 // function getOrderNumber(): number {
@@ -33,17 +36,40 @@ const returnOrderNumber = () => {
     return newOrderNumber;
 }
 
-const OrderConfirmation = (props: { cookingTime : number | undefined, callback: () => void }) => {
-    return (
-        <div>
-            <h3>Ditt ordernummer är: {returnOrderNumber()}</h3>
+type OrderConfirmationProps = {
+    cookingTime : number | undefined,
+    callback: () => void,
+    cartItem : CartItem
+}
 
-            <h3>Din order beräknas ta {props.cookingTime} minuter</h3>
+const OrderConfirmation = ({ cookingTime, callback, cartItem} : OrderConfirmationProps) => {
+
+    const [payment, setPayment] = useState(false);
+    const [clicked, setClicked] = useState(false);
+    const {total} = useParams<{total: string}>();
+
+    return (
+        payment ? (<div>
+            
+            <CartComponent cartItem={cartItem} title="Kvitto"/>
+            <h3 style={{marginTop:"1rem"}}>Ditt ordernummer är: {returnOrderNumber()}</h3>
+
+            <h3>Din order beräknas ta {cookingTime} minuter</h3>
 
             <NavLink to="/">
-                <button className="navigation-button" onClick={props.callback}>NY BESTÄLLNING</button>
+                <button className="navigation-button" onClick={callback}>NY BESTÄLLNING</button>
             </NavLink>
-        </div>
+        </div>) :  (
+        <>
+            {clicked ? (<><p className="ongoingPayment">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{
+                setClicked(true);
+                setTimeout(()=>setPayment(true),4000)
+                }}>
+                BETALA {total} kr
+                </button>)}
+                
+                </>
+                )
     )
 }
 

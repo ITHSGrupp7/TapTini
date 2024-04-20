@@ -33,8 +33,8 @@ function App() {
         <Route path="/" element={<Homepage callback={setDish} />} />
         <Route path="/sides" element={<SidesComponent callback={setSides} />} />
         <Route path="/drink" element={<GetDrinks dishName={dish?.title} callback={setDrink} />} />
-        <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} />} />
-        <Route path="/orderconfirmation" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} />} />
+        <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} title='Cart' />} />
+        <Route path="/orderconfirmation/:total" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} cartItem={{ dish: dish, sides: sides, drink: drink }} />} />
       </Routes>
 
       <div id='cart' className='cart-popup cart-hidden'>
