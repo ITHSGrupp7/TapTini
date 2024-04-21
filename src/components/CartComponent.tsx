@@ -34,22 +34,21 @@ const CartComponent = ({ cartItem, title} : CartComponentProps) => {
                     <td>{cartItem.dish?.price} kr</td>
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
                 </tr>
-                <tr>
-                    <td>{cartItem.sides ? cartItem.sides.map(side => <p key={side._id}>{side.title}</p>) : null}
-                    </td>
+                    {cartItem.sides ? cartItem.sides.map(side => <tr><td key={side._id}>{side.title}</td><td>{side.price} kr</td></tr>) : null}
+                    
                     {/* <td>{cartItem.sides?.reduce<number>((acc: Item, curr: Item) => side.price + prev.price)} kr</td> */}
-                    <td>{sidesPrice} kr</td>
+                    
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
+                <tr>
                 </tr>
                 <tr>
                     <td>{cartItem.drink?.title}</td>
-                    <td>{cartItem.drink?.price} kr</td>
+                    <td>{cartItem.drink?.price}{cartItem.drink ? "kr" : null}</td>
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
                 </tr>
                 <tr className="cartCost">
                     <td><strong>Total Price:</strong></td>
                     <td className="cartTotal"><strong>{total} kr</strong></td>
-                    <td></td>
                 </tr>
             </tbody>
         </table>

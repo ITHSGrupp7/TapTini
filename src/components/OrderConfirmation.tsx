@@ -39,31 +39,34 @@ const returnOrderNumber = () => {
 type OrderConfirmationProps = {
     cookingTime : number | undefined,
     callback: () => void,
-    cartItem : CartItem
+    cartItem : CartItem,
+    toggleCartIcon : () => void
 }
 
-const OrderConfirmation = ({ cookingTime, callback, cartItem} : OrderConfirmationProps) => {
-
+const OrderConfirmation = ({ cookingTime, callback, cartItem, toggleCartIcon} : OrderConfirmationProps) => {
+    
     const [payment, setPayment] = useState(false);
     const [clicked, setClicked] = useState(false);
     const {total} = useParams<{total: string}>();
 
     return (
-        payment ? (<div>
+        payment ? (
+        <>
             
             <CartComponent cartItem={cartItem} title="Kvitto"/>
             <h3 style={{marginTop:"1rem"}}>Ditt ordernummer är: {returnOrderNumber()}</h3>
 
-            <h3>Din order beräknas ta {cookingTime} minuter</h3>
+            <h3 style={{margin:"1rem"}}>Din order beräknas ta {cookingTime} minuter</h3>
 
             <NavLink to="/">
-                <button className="navigation-button" onClick={callback}>NY BESTÄLLNING</button>
+                <button className="navigation-button" onClick={()=>{callback();toggleCartIcon()}}>NY BESTÄLLNING</button>
             </NavLink>
-        </div>) :  (
+        </>
+        ) :  (
         <>
-            {clicked ? (<><p className="ongoingPayment">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{
+            {clicked ? (<><p className="ongoingPayment">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{ 
                 setClicked(true);
-                setTimeout(()=>setPayment(true),4000)
+                setTimeout(()=>setPayment(true),4000);
                 }}>
                 BETALA {total} kr
                 </button>)}

@@ -10,7 +10,9 @@
     text-align:left;
 }
 
-
+td{
+    padding: 0.5rem;
+}
 .cartCost{
     background-color: rgba(255, 124, 1, 0.5);
 }
