@@ -30,7 +30,7 @@ function App() {
   const toggleCart = () => document.getElementById("cart")?.classList.toggle("cart-hidden");
   const [cartIcon, showCartIcon] = useState(true);
   const navigate = useNavigate(); 
-  
+  const [isCartEmpty, cartIsEmpty] = useState(false);
   function emptyCart(): void {
     setDish(undefined)
     setDrink(undefined)
@@ -55,20 +55,19 @@ function App() {
         <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} title='Cart' setItem={setItem} removeSide={removeSide} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
         <Route path="/orderconfirmation/:total" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} cartItem={{ dish: dish, sides: sides, drink: drink }} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
       </Routes>
-      
       <div id='cart' className='cart-popup cart-hidden'>
         <div>
           <div className='cart-header'>
             <h3>Cart</h3>
             <span onClick={toggleCart}>❌</span>
           </div>
-          {dish || sides!.length > 0 || drink ?
+          {!isCartEmpty || dish || sides!.length > 0 || drink ? 
             <div className='cart-items'>
-              {dish ? <div><span className='cart-item'>{dish.title}</span><span onClick={()=>{setDish(undefined); setDrink(undefined); setSides([]); navigate("/");}} id='remove-icon'>🗑️</span></div> : null}
+              {dish ? <div><span className='cart-item'>{dish.title}</span><span onClick={()=>{setDish(undefined); setDrink(undefined); setSides([]); cartIsEmpty(true); navigate("/"); setTimeout(()=>toggleCart(),4000);}} id='remove-icon'>🗑️</span></div> : null}
               {sides && dish ? sides.map(side => <div><span key={side._id} className='cart-item'>{side.title}</span><span onClick={()=>setSides(sides.filter(_side => _side.title != side.title))} id='remove-icon'>🗑️</span></div>) : null}
               {drink && dish ? <div><span className='cart-item'>{drink.title}</span><span onClick={()=>setDrink(undefined)} id='remove-icon'>🗑️</span></div> : null}
             </div>
-            : <p>No items in cart</p>}
+            : <p className="redirection-text">Vänligen välj huvudrätt</p>}
         </div>
       </div>
     </div>

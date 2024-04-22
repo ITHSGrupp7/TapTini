@@ -64,7 +64,7 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : Or
         </>
         ) :  (
         <>
-            {clicked ? (<><p className="ongoingPayment">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{ 
+            {clicked ? (<><p className="redirection-text">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{ 
                 setClicked(true);
                 setTimeout(()=>setPayment(true),4000);
                 }}>
