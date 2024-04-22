@@ -9,10 +9,10 @@ import { Item } from "../service/Service";
 type DrinkProps = {
   dishName: string | undefined;
   callback: (item: Item | undefined) => void;
-  toggleCartIcon : () => void;
+  showCartIcon : (value : boolean) => void;
 }
 
-export const GetDrinks = ({dishName, callback, toggleCartIcon} : DrinkProps) => {
+export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
 
   type Drink = {
     strDrink: string;
@@ -69,7 +69,7 @@ export const GetDrinks = ({dishName, callback, toggleCartIcon} : DrinkProps) => 
     <div key={drink.idDrink} className="drink-choice">
       <NavLink to="/cart">
         <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => {
-          toggleCartIcon();
+          showCartIcon(false);
           callback({ _id: drink.idDrink, title: drink.strDrink, price: drink.price })}} />
       </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
@@ -127,7 +127,7 @@ export const GetDrinks = ({dishName, callback, toggleCartIcon} : DrinkProps) => 
               <div className="product__infos">
 
                 <NavLink to="/cart">
-                  <button className="navigation-button" onClick={() => {toggleCartIcon(); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
+                  <button className="navigation-button" onClick={() => {showCartIcon(false); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
                 </NavLink>
                 <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
 

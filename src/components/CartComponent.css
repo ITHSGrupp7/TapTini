@@ -16,3 +16,18 @@ td{
 .cartCost{
     background-color: rgba(255, 124, 1, 0.5);
 }
+.trash{
+    cursor: pointer;
+}
+.redirection-text {
+    font-size: 2rem;
+    animation: pulse 1s infinite alternate;
+  }
+  @keyframes pulse {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }

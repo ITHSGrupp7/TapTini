@@ -13,12 +13,24 @@ function App() {
   const [drink, setDrink] = useState<Item | undefined>()
   const [sides, setSides] = useState<Item[] | undefined>([])
 
-  const [cartIcon, toggleCartIcon] = useState(true);
-  const navigate = useNavigate(); 
-  function toggleCart(){
-    document.getElementById("cart")?.classList.toggle("cart-hidden");
+  const setItem = (item : string) => {
+    switch (item){
+      case "dish":
+        setDish(undefined);
+        break;
+        case "drink":
+          setDrink(undefined);
+          break;
+          case "sides":
+            setSides([]);
+            break;
+    }
   }
-
+  const removeSide = (_side : Item) => setSides(sides?.filter(side => side.title != _side.title));
+  const toggleCart = () => document.getElementById("cart")?.classList.toggle("cart-hidden");
+  const [cartIcon, showCartIcon] = useState(true);
+  const navigate = useNavigate(); 
+  
   function emptyCart(): void {
     setDish(undefined)
     setDrink(undefined)
@@ -39,9 +51,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage callback={setDish} />} />
         <Route path="/sides" element={<SidesComponent callback={setSides} />} />
-        <Route path="/drink" element={<GetDrinks dishName={dish?.title} callback={setDrink} toggleCartIcon={() => toggleCartIcon(cartIcon==true ? false : true)} />} />
-        <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} title='Cart' />} />
-        <Route path="/orderconfirmation/:total" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} cartItem={{ dish: dish, sides: sides, drink: drink }} toggleCartIcon={() => toggleCartIcon(cartIcon==true ? false : true)}/>} />
+        <Route path="/drink" element={<GetDrinks dishName={dish?.title} callback={setDrink} showCartIcon={(value : boolean) => showCartIcon(value)} />} />
+        <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} title='Cart' setItem={setItem} removeSide={removeSide} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
+        <Route path="/orderconfirmation/:total" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} cartItem={{ dish: dish, sides: sides, drink: drink }} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
       </Routes>
       
       <div id='cart' className='cart-popup cart-hidden'>

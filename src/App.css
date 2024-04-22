@@ -172,7 +172,7 @@
   transition: transform ease 1s;
 }
 .ongoingPayment {
-  font-size: larger;
+  font-size: 2rem;
   animation: pulse 1s infinite alternate;
 }
 @keyframes pulse {

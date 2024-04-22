@@ -40,10 +40,10 @@ type OrderConfirmationProps = {
     cookingTime : number | undefined,
     callback: () => void,
     cartItem : CartItem,
-    toggleCartIcon : () => void
+    showCartIcon : (value : boolean) => void
 }
 
-const OrderConfirmation = ({ cookingTime, callback, cartItem, toggleCartIcon} : OrderConfirmationProps) => {
+const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : OrderConfirmationProps) => {
     
     const [payment, setPayment] = useState(false);
     const [clicked, setClicked] = useState(false);
@@ -53,13 +53,13 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, toggleCartIcon} : 
         payment ? (
         <>
             
-            <CartComponent cartItem={cartItem} title="Kvitto"/>
+            <CartComponent cartItem={cartItem} title="Kvitto" setItem={()=>{}} removeSide={()=>{}} showCartIcon={()=>{}}/>
             <h3 style={{marginTop:"1rem"}}>Ditt ordernummer är: {returnOrderNumber()}</h3>
 
             <h3 style={{margin:"1rem"}}>Din order beräknas ta {cookingTime} minuter</h3>
 
             <NavLink to="/">
-                <button className="navigation-button" onClick={()=>{callback();toggleCartIcon()}}>NY BESTÄLLNING</button>
+                <button className="navigation-button" onClick={()=>{callback(); showCartIcon(true)}}>NY BESTÄLLNING</button>
             </NavLink>
         </>
         ) :  (
