@@ -97,18 +97,17 @@ const CartComponent = ({ deleteItem, cartItems, title, setItem, removeSide, setC
                 </tr>
             </tbody>
         </table>
-        {(title == "Cart") ? (<NavLink to={`/orderconfirmation/${totalAll}`}>
+        {(title == "Cart") ? (<NavLink to={`/orderconfirmation`}>
             <button className="navigation-button">BESTÄLL</button>
         </NavLink>) : null}
 
 
-        <NavLink to="/">
+        {title === "Cart" && <NavLink to="/">
             <button className="navigation-button">LÄGG TILL RÄTT</button>
-            {/* <button className="navigation-button" onClick={() => setCartItems()}>LÄGG TILL RÄTT</button> */}
         </NavLink>
+        }
 
-
-    </div> :  <p className="redirection-text">Vänligen välj huvudrätt</p>
+    </div> : <p className="redirection-text">Vänligen välj huvudrätt</p>
 };
 
 export default CartComponent
