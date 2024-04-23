@@ -31,3 +31,8 @@ td{
       opacity: 1;
     }
   }
+
+ .sides-row {
+  color: rgb(177, 174, 174);
+  font-size: .8rem;
+ } 

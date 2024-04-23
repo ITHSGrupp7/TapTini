@@ -113,6 +113,9 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
               <div className="product__list">
                 {drinks?.map(drink => drinkItem(drink))}
               </div>
+              <NavLink to="/cart">
+                    <button className="navigation-button" onClick={() => callback(undefined)}>Fortsätt utan dryck</button>
+              </NavLink>
             </div>
           </div>
           :
@@ -130,6 +133,10 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
                   <button className="navigation-button" onClick={() => {showCartIcon(false); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
                 </NavLink>
                 <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
+
+                <NavLink to="/cart">
+                    <button className="navigation-button" onClick={() => callback(undefined)}>Fortsätt utan dryck</button>
+                </NavLink>
 
               </div>
             </div>
