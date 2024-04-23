@@ -1,24 +1,19 @@
-// import { useSelector } from "react-redux"
-// import { RootState } from "../state/store"
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { CartItem, Item } from "../service/Service";
 import "./CartComponent.css"
-import { useState, useEffect } from "react";
-// import { useDispatch } from 'react-redux';
+import { useEffect } from "react";
 
 type CartComponentProps = {
     setCartItems: () => void;
-    // cartItem: CartItem,
     cartItems: CartItem[],
     title: string,
     setItem: (item: string) => void;
     removeSide: (item: Item) => void;
-    // showCartIcon: (value: boolean) => void;
+    showCartIcon: (value: boolean) => void;
     deleteItem: (nr: number) => void;
 }
 
-const CartComponent = ({ deleteItem, cartItems, title, setItem, removeSide, setCartItems }: CartComponentProps) => {
+const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, removeSide, setCartItems }: CartComponentProps) => {
     // const cart = useSelector((state: RootState) => state.cart.items);
     // const dispatch = useDispatch();
 
@@ -59,7 +54,7 @@ const CartComponent = ({ deleteItem, cartItems, title, setItem, removeSide, setC
                                 // setItem("drink");
                                 // setItem("sides");
                                 // cartIsEmpty(true);
-                                // showCartIcon(true);
+                                showCartIcon(true);
                                 deleteItem(i)
                                 // setTimeout(() => navigate("/"), 4000);
                             }} className="trash">🗑️</td> : null}
@@ -103,7 +98,7 @@ const CartComponent = ({ deleteItem, cartItems, title, setItem, removeSide, setC
 
 
         {title === "Cart" && <NavLink to="/">
-            <button className="navigation-button">LÄGG TILL RÄTT</button>
+            <button className="navigation-button" onClick={() => showCartIcon(true)}>LÄGG TILL RÄTT</button>
         </NavLink>
         }
 

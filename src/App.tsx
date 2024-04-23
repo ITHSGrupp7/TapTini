@@ -17,19 +17,16 @@ function App() {
   const navigate = useNavigate();
 
   const deleteItem = (index: number) => {
-    console.log(index);
-    
-
-    setCartItems(prevItems => prevItems.filter((item, i) => i !== index))
+    setCartItems(prevItems => prevItems.filter((_, i) => i !== index))
   }
 
 
 
   // Delete drink 
   // Map over cartItems if "nr" equals to "index" set drink to "undefined"
-  const deleteDrink = (drinki : number) => {
+  const deleteDrink = (drinki: number) => {
     console.log(drinki)
-    setCartItems(prevItems => prevItems.map((item, i) => ({...item, drink: i !==drinki ? item.drink : undefined})))
+    setCartItems(prevItems => prevItems.map((item, i) => ({ ...item, drink: i !== drinki ? item.drink : undefined })))
   }
 
   // const deleteDrink = (itemIndex: number) => {
@@ -90,42 +87,42 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={
-        <Homepage 
-              callback={setDish} />} />
+          <Homepage
+            callback={setDish} />} />
 
         <Route path="/sides" element={
-        <SidesComponent 
-              callback={setSides} />}/>
+          <SidesComponent
+            callback={setSides} />} />
 
         <Route path="/drink" element={
-        <GetDrinks 
-              dishName={dish?.title} 
-              callback={setDrink} 
-              showCartIcon={(value: boolean) => showCartIcon(value)} />} />
+          <GetDrinks
+            dishName={dish?.title}
+            callback={setDrink}
+            showCartIcon={(value: boolean) => showCartIcon(value)} />} />
 
         <Route path="/cart" element={
-        <CartComponent 
-              deleteItem={deleteItem}
-              //deleteDrink={deleteDrink}
-              //deleteSide={deleteSide}
-              // cartItem={{ dish: dish, sides: sides, drink: drink }} 
-              cartItems={cartItems} 
-              setCartItems={addToCart} 
-              title='Cart' 
-              setItem={setItem} 
-              removeSide={removeSide} 
-              // showCartIcon={(value: boolean) => showCartIcon(value)} 
-              />} 
-         />
-       
+          <CartComponent
+            deleteItem={deleteItem}
+            //deleteDrink={deleteDrink}
+            //deleteSide={deleteSide}
+            // cartItem={{ dish: dish, sides: sides, drink: drink }} 
+            cartItems={cartItems}
+            setCartItems={addToCart}
+            title='Cart'
+            setItem={setItem}
+            removeSide={removeSide}
+            showCartIcon={(value: boolean) => showCartIcon(value)}
+          />}
+        />
+
         <Route path="/orderconfirmation" element={
-        <OrderConfirmation 
-              deleteItem={deleteItem} 
-              cartItems={cartItems} 
-              setCartItems={addToCart} 
-              callback={emptyCart} 
-              cartItem={{ dish: dish, sides: sides, drink: drink }} 
-              showCartIcon={(value: boolean) => showCartIcon(value)} />} />
+          <OrderConfirmation
+            deleteItem={deleteItem}
+            cartItems={cartItems}
+            setCartItems={addToCart}
+            callback={emptyCart}
+            cartItem={{ dish: dish, sides: sides, drink: drink }}
+            showCartIcon={(value: boolean) => showCartIcon(value)} />} />
 
       </Routes>
       <div id='cart' className='cart-popup cart-hidden'>

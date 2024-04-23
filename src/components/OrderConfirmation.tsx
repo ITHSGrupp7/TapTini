@@ -39,7 +39,7 @@ const OrderConfirmation = ({ deleteItem, callback, setCartItems, cartItems, show
         payment ? (
             <>
 
-                <CartComponent deleteItem={deleteItem} cartItems={cartItems} setCartItems={setCartItems} title="Kvitto" setItem={() => { }} removeSide={() => { }}  />
+                <CartComponent showCartIcon={showCartIcon} deleteItem={deleteItem} cartItems={cartItems} setCartItems={setCartItems} title="Kvitto" setItem={() => { }} removeSide={() => { }}  />
                 <h3 style={{ marginTop: "1rem" }}>Ditt ordernummer är: {returnOrderNumber()}</h3>
 
                 <h3 style={{ margin: "1rem" }}>Din order beräknas ta {cookingTime} minuter</h3>
