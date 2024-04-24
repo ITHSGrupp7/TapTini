@@ -41,7 +41,7 @@ function App() {
     <div className="page-wrapper">
       <div className="header">
         <NavLink to={"/"}>
-          <img src="/logo.svg" alt="logo" />
+          <img src="/logo.svg" alt="logo" onClick={()=>showCartIcon(true)}/>
         </NavLink>
         {cartIcon ? <div>
           <div id="basket" onClick={toggleCart}></div>

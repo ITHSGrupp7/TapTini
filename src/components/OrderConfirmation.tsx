@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import CartComponent from "./CartComponent";
 import { CartItem } from "../service/Service";
 import { useState } from "react";
@@ -48,6 +48,7 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : Or
     const [payment, setPayment] = useState(false);
     const [clicked, setClicked] = useState(false);
     const {total} = useParams<{total: string}>();
+    const navigate = useNavigate();
 
     return (
         payment ? (
@@ -64,12 +65,18 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : Or
         </>
         ) :  (
         <>
-            {clicked ? (<><p className="redirection-text">Betalning pågår...</p><div className="paymentAnimation"></div></>) : (<button className="paymentButton" onClick={()=>{ 
+            {clicked ? (<><p className="redirection-text">Betalning pågår...</p>
+            <div className="paymentAnimation"></div></>) : 
+            (<><button className="redirection-button" onClick={()=>{ 
                 setClicked(true);
                 setTimeout(()=>setPayment(true),4000);
                 }}>
                 BETALA {total} kr
-                </button>)}
+                </button>
+                <p style={{fontWeight:"bolder", fontSize:"1.2rem"}}>ELLER</p>
+                <button className="redirection-button" onClick={()=>{navigate("/"); showCartIcon(true)}}>
+                    Lägg till fler rätter</button>
+                </>)}
                 
                 </>
                 )
