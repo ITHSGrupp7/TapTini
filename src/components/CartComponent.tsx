@@ -11,9 +11,12 @@ type CartComponentProps = {
     removeSide: (item: Item) => void;
     showCartIcon: (value: boolean) => void;
     deleteItem: (nr: number) => void;
+    deleteDrink: (nr: number) => void;
+    resetItemSelections: () => void;
+    deleteSide: (nr1: number, nr2: number) => void;
 }
 
-const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, removeSide, setCartItems }: CartComponentProps) => {
+const CartComponent = ({ resetItemSelections, deleteItem, deleteDrink, deleteSide, cartItems, showCartIcon, title, setItem, removeSide, setCartItems }: CartComponentProps) => {
     // const cart = useSelector((state: RootState) => state.cart.items);
     // const dispatch = useDispatch();
 
@@ -33,7 +36,7 @@ const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, re
 
     return cartItems.length > 0 ? <div className="cartTable">
         <h2>{title}</h2>
-        <table>
+        <table >
             <thead className="cartTableHead">
                 <tr>
                     <th>Categori</th>
@@ -54,20 +57,24 @@ const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, re
                                 // setItem("drink");
                                 // setItem("sides");
                                 // cartIsEmpty(true);
-                                showCartIcon(true);
+                                // showCartIcon(true);
                                 deleteItem(i)
                                 // setTimeout(() => navigate("/"), 4000);
                             }} className="trash">🗑️</td> : null}
                         </tr>
 
-                        {item.sides ? item.sides.map(side =>
-                            <tr className="sides-row">
+                        {item.sides ? item.sides.map((side, j) =>
+                            <tr className="sides-row" key={side._id}>
                                 <td>🥗 Side</td>
-                                <td key={side._id}>{side.title}</td>
-                                <td>{side.price} kr</td>
+                                <td >{side.title}</td>
+                                <td>{side.price} {side ? "kr" : " "} </td>
+
                                 {title == "Cart"
-                                    ? <td onClick={() => removeSide(side)} className="trash">🗑️</td>
+                                    ? <td onClick={() => deleteSide(i, j)} className="trash">🗑️</td>
                                     : null}
+                                {/* {title == "Cart"
+                                    ? <td onClick={() => removeSide(side)} className="trash">🗑️</td>
+                                    : null} */}
                             </tr>)
                             : null}
 
@@ -76,8 +83,11 @@ const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, re
                             <td>{item.drink ? item.drink.title : "Ingen dryck vald"}</td>
                             <td>{item.drink?.price}{item.drink ? "kr" : " "}</td>
                             {(title == "Cart" && item.drink)
-                                ? <td onClick={() => setItem("drink")} className="trash">🗑️</td>
+                                ? <td onClick={() => deleteDrink(i)} className="trash">🗑️</td>
                                 : null}
+                            {/* {(title == "Cart" && item.drink)
+                                ? <td onClick={() => setItem("drink")} className="trash">🗑️</td>
+                                : null} */}
                             {/* cartItems.map((item, itemIndex) => (
                              <td onClick={() => handleDeleteDrink(itemIndex)} className="trash">🗑️</td>
                             ) : null} */}
@@ -98,11 +108,16 @@ const CartComponent = ({ deleteItem, cartItems, showCartIcon, title, setItem, re
 
 
         {title === "Cart" && <NavLink to="/">
-            <button className="navigation-button" onClick={() => showCartIcon(true)}>LÄGG TILL RÄTT</button>
+            <button className="navigation-button" onClick={() => { showCartIcon(true); resetItemSelections() }}>LÄGG TILL RÄTT</button>
         </NavLink>
         }
 
-    </div> : <p className="redirection-text">Vänligen välj huvudrätt</p>
+    </div> : <div>
+        <p className="redirection-text">Vänligen välj huvudrätt</p>
+        <button className="navigation-button" onClick={() => { navigate("/"); showCartIcon(true); resetItemSelections() }}>Fortsätt till start</button>
+
+        {/* <p className="redirection-text" {...setTimeout(() => navigate("/"), 4000)}>Vänligen välj huvudrätt</p> */}
+    </div>
 };
 
 export default CartComponent
