@@ -119,7 +119,13 @@
   display: flex;
   flex-direction: column;
 }
-
+.cart-item-dish {
+  font-size: 14pt;
+  text-decoration: underline;
+}
+.cart-item-small {
+  font-size: 12pt;
+}
 #remove-icon{
   float:right;
   cursor: pointer;

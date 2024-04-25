@@ -120,11 +120,11 @@ function App() {
             <span onClick={toggleCart}>❌</span>
           </div>
           
-            <div className='cart-items'>{cart.map(m => <p>{m.id}</p>)}<p></p>{cart.length}
+            <div className='cart-items'>
               {cart.find(_menu => _menu.dish) ? cart?.map(_menu => <>
-              {_menu.dish ? <div><span className='cart-item'>{_menu.dish?.title}</span><span onClick={cart.length == 1 ? ()=>{removeItem("dish", _menu.id); onEmptyCart()} : ()=>removeItem("dish", _menu.id)} id='remove-icon'>🗑️</span></div> : null}
-              {_menu.sides && _menu.dish ? _menu.sides.map(side => <div><span key={side._id} className='cart-item'>{side.title}</span><span onClick={()=>removeSide(side, _menu.id)} id='remove-icon'>🗑️</span></div>) : null}
-              {_menu.drink && _menu.dish ? <div><span className='cart-item'>{_menu.drink.title}</span><span onClick={()=>removeItem("drink", _menu.id)} id='remove-icon'>🗑️</span></div> : null}</>)
+              {_menu.dish ? <div><span className='cart-item-dish'>{_menu.dish?.title}</span><span onClick={cart.length == 1 ? ()=>{removeItem("dish", _menu.id); onEmptyCart()} : ()=>removeItem("dish", _menu.id)} id='remove-icon'>🗑️</span></div> : null}
+              {_menu.sides && _menu.dish ? _menu.sides.map(side => <div><span key={side._id} className='cart-item-small'>{side.title}</span><span onClick={()=>removeSide(side, _menu.id)} id='remove-icon'>🗑️</span></div>) : null}
+              {_menu.drink && _menu.dish ? <div><span className='cart-item-small'>{_menu.drink.title}</span><span onClick={()=>removeItem("drink", _menu.id)} id='remove-icon'>🗑️</span></div> : null}</>)
               : <p className="redirection-text">Vänligen välj huvudrätt</p>}
             </div>
             
