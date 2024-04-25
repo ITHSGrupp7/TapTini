@@ -2,39 +2,97 @@ import Homepage from './pages/Homepage/Homepage'
 import './App.css'
 import { NavLink, Route, Routes, useNavigate } from 'react-router-dom'
 import { GetDrinks } from './components/DrinksComponent'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import SidesComponent from './components/SidesComponent'
 import CartComponent from './components/CartComponent'
-import { Item } from './service/Service'
+import { Item, Menu} from './service/Service'
 import OrderConfirmation from './components/OrderConfirmation'
+import { nanoid } from '@reduxjs/toolkit'
 
 function App() {
-  const [dish, setDish] = useState<Item | undefined>()
-  const [drink, setDrink] = useState<Item | undefined>()
-  const [sides, setSides] = useState<Item[] | undefined>([])
-
-  const setItem = (item : string) => {
+  const _id = nanoid();
+  const menuId = useRef(_id);
+  const [cart, setCart] = useState<Menu[]>([{id : _id}]);
+  
+  const removeItem = (item : string, _menuId : string) => {
     switch (item){
       case "dish":
-        setDish(undefined);
+        setCart(cart => cart.filter(menu => {
+          return menu.id !== _menuId;
+        }));
+        if (cart.length == 0){
+         emptyCart();
+        }
         break;
         case "drink":
-          setDrink(undefined);
+          setCart(cart => cart.map(menu => {
+            if (menu.id === _menuId){
+              const {drink, ...updatedMenu} = menu;
+              drink == null;
+              return updatedMenu;
+            }
+            return menu;
+          }));
           break;
-          case "sides":
-            setSides([]);
-            break;
     }
   }
-  const removeSide = (_side : Item) => setSides(sides?.filter(side => side.title != _side.title));
+  const removeSide = (_side : Item, _menuId : string) => {
+    setCart(cart => cart.map(menu => {
+      if (menu.id === _menuId){
+        const updatedSides = menu.sides?.filter(side => side.title !== _side.title);
+        return {...menu, sides : updatedSides};
+      }
+      return menu;
+    }));
+  }
   const toggleCart = () => document.getElementById("cart")?.classList.toggle("cart-hidden");
   const [cartIcon, showCartIcon] = useState(true);
   const navigate = useNavigate(); 
-  const [isCartEmpty, cartIsEmpty] = useState(false);
-  function emptyCart(): void {
-    setDish(undefined)
-    setDrink(undefined)
-    setSides([])
+  
+  
+  function onEmptyCart(){
+    emptyCart();
+    navigate("/"); 
+    setTimeout(()=>toggleCart(),4000);
+  }
+
+  function emptyCart() {
+    const newMenuId = nanoid();
+    setCart([{id : newMenuId}]);
+    menuId.current = newMenuId;
+  }
+
+  function addDish(_dish : Item){
+    setCart(cart => cart.map(menu => {
+      if (menu.id === menuId.current){
+        return {...menu, dish : _dish}
+      }
+      return menu;
+    }));
+  }
+
+  function addSides(_sides : Item[]){
+    setCart(cart => cart.map(menu => {
+      if (menu.id === menuId.current){
+        return {...menu, sides : _sides}
+      }
+      return menu;
+    }));
+  }
+
+  function addDrink(_drink : Item){
+    setCart(cart => cart.map(menu => {
+      if (menu.id === menuId.current){
+        return {...menu, drink : _drink}
+      }
+      return menu;
+    }));
+  }
+
+  const addMenu = () => {
+    const newMenuId = nanoid();
+    setCart(cart => [...cart, {id : newMenuId}]);
+    menuId.current = newMenuId;
   }
 
   return (
@@ -49,11 +107,11 @@ function App() {
         
       </div>
       <Routes>
-        <Route path="/" element={<Homepage callback={setDish} />} />
-        <Route path="/sides" element={<SidesComponent callback={setSides} />} />
-        <Route path="/drink" element={<GetDrinks dishName={dish?.title} callback={setDrink} showCartIcon={(value : boolean) => showCartIcon(value)} />} />
-        <Route path="/cart" element={<CartComponent cartItem={{ dish: dish, sides: sides, drink: drink }} title='Cart' setItem={setItem} removeSide={removeSide} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
-        <Route path="/orderconfirmation/:total" element={<OrderConfirmation cookingTime={dish?.timeInMins} callback={emptyCart} cartItem={{ dish: dish, sides: sides, drink: drink }} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
+        <Route path="/" element={<Homepage callback={addDish}/>} />
+        <Route path="/sides" element={<SidesComponent callback={addSides} />} />
+        <Route path="/drink" element={<GetDrinks dishName={cart.find(menu => menu.id === menuId.current)?.dish?.title} callback={addDrink} showCartIcon={(value : boolean) => showCartIcon(value)} />} />
+        <Route path="/cart" element={<CartComponent cart={cart} emptyCart={emptyCart} title='Cart' removeItem={removeItem} removeSide={removeSide} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
+        <Route path="/orderconfirmation/:total" element={<OrderConfirmation addMenu={addMenu} callback={emptyCart} cookingTime={cart?.find(_menu => _menu.id === menuId.current)?.dish?.timeInMins} cart={cart} showCartIcon={(value : boolean) => showCartIcon(value)}/>} />
       </Routes>
       <div id='cart' className='cart-popup cart-hidden'>
         <div>
@@ -61,13 +119,15 @@ function App() {
             <h3>Cart</h3>
             <span onClick={toggleCart}>❌</span>
           </div>
-          {!isCartEmpty || dish || sides!.length > 0 || drink ? 
-            <div className='cart-items'>
-              {dish ? <div><span className='cart-item'>{dish.title}</span><span onClick={()=>{setDish(undefined); setDrink(undefined); setSides([]); cartIsEmpty(true); navigate("/"); setTimeout(()=>toggleCart(),4000);}} id='remove-icon'>🗑️</span></div> : null}
-              {sides && dish ? sides.map(side => <div><span key={side._id} className='cart-item'>{side.title}</span><span onClick={()=>setSides(sides.filter(_side => _side.title != side.title))} id='remove-icon'>🗑️</span></div>) : null}
-              {drink && dish ? <div><span className='cart-item'>{drink.title}</span><span onClick={()=>setDrink(undefined)} id='remove-icon'>🗑️</span></div> : null}
+          
+            <div className='cart-items'>{cart.map(m => <p>{m.id}</p>)}<p></p>{cart.length}
+              {cart.find(_menu => _menu.dish) ? cart?.map(_menu => <>
+              {_menu.dish ? <div><span className='cart-item'>{_menu.dish?.title}</span><span onClick={cart.length == 1 ? ()=>{removeItem("dish", _menu.id); onEmptyCart()} : ()=>removeItem("dish", _menu.id)} id='remove-icon'>🗑️</span></div> : null}
+              {_menu.sides && _menu.dish ? _menu.sides.map(side => <div><span key={side._id} className='cart-item'>{side.title}</span><span onClick={()=>removeSide(side, _menu.id)} id='remove-icon'>🗑️</span></div>) : null}
+              {_menu.drink && _menu.dish ? <div><span className='cart-item'>{_menu.drink.title}</span><span onClick={()=>removeItem("drink", _menu.id)} id='remove-icon'>🗑️</span></div> : null}</>)
+              : <p className="redirection-text">Vänligen välj huvudrätt</p>}
             </div>
-            : <p className="redirection-text">Vänligen välj huvudrätt</p>}
+            
         </div>
       </div>
     </div>

@@ -8,7 +8,8 @@ export type Item = {
     quantity?: number
 }
 
-export type CartItem = {
+export type Menu = {
+    id : string,
     dish?: Item,
     sides?: Item[],
     drink?: Item,

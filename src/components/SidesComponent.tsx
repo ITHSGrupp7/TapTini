@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidesComponent.css';
-import { Item } from '../service/Service';
+import { Item} from '../service/Service';
 
 type Side = {
     name: string;
@@ -18,7 +18,11 @@ const sideItems: Side[] = [
     { name: "Skaldjur", price: 159, isSelected: false },
 ];
 
-const SidesComponent = (props: { callback: (item: Item[] | undefined) => void }) => {
+type SideProps = {
+    callback: (item: Item[]) => void
+}
+
+const SidesComponent = ({callback} : SideProps) => {
 
     const [items, setItems] = useState<Side[]>(sideItems)
 
@@ -80,7 +84,7 @@ const SidesComponent = (props: { callback: (item: Item[] | undefined) => void })
                         }
                     })
                     setItems(sideItems)
-                    props.callback(sides)
+                    callback(sides)
 
                 }}>GÅ VIDARE</button>
             </NavLink>

@@ -1,25 +1,34 @@
 // import { useSelector } from "react-redux"
 // import { RootState } from "../state/store"
 import { NavLink, useNavigate } from "react-router-dom";
-import { CartItem, Item } from "../service/Service";
+import { Item, Menu} from "../service/Service";
 import "./CartComponent.css"
 import { useState } from "react";
+import { nanoid } from "@reduxjs/toolkit";
 // import { useDispatch } from 'react-redux';
 
 type CartComponentProps = {
-    cartItem : CartItem,
+    cart : Menu[],
     title : string,
-    setItem : (item : string) => void;
-    removeSide : (item : Item) => void;
+    emptyCart : () => void;
+    removeItem : (item : string, menuId : string) => void;
+    removeSide : (side : Item, menuId : string) => void;
     showCartIcon : (value : boolean) => void;
 }
 
-const CartComponent = ({ cartItem, title, setItem, removeSide, showCartIcon} : CartComponentProps) => {
+const CartComponent = ({ cart, title, emptyCart, removeItem, removeSide, showCartIcon} : CartComponentProps) => {
     // const cart = useSelector((state: RootState) => state.cart.items);
     // const dispatch = useDispatch();
-
-    const sidesPrice: number = cartItem.sides?.reduce((totalPrice, side) => totalPrice + side.price, 0) || 0
-    const total = (cartItem?.dish?.price ?? 0) + (cartItem?.drink?.price ?? 0) + sidesPrice;
+    
+    const total = cart.reduce((total, menu) => total + (menu.dish?.price ?? 0) + (menu.drink?.price ?? 0) + (menu.sides ? menu.sides.reduce((sidesPrice, side) => sidesPrice + (side.price ?? 0), 0) : 0) ,0);
+    
+    const onEmptyCart = () => {
+        cartIsEmpty(true); 
+        showCartIcon(true);
+        emptyCart(); 
+        setTimeout(()=>navigate("/"),4000);
+    };
+    
     const navigate = useNavigate(); 
     const [isCartEmpty, cartIsEmpty] = useState(false);
     return !isCartEmpty ? <div className="cartTable">
@@ -32,31 +41,34 @@ const CartComponent = ({ cartItem, title, setItem, removeSide, showCartIcon} : C
                     <th>Price</th>
                 </tr>
             </thead>
-
+            
             <tbody className="cartTableBody">
+            {cart ? cart.map(menu => 
+            <>
                 <tr>
-                    <td>{cartItem.dish?.title}</td>
-                    <td>{cartItem.dish?.price} kr</td>
-                    {title == "Cart" ? <td onClick={()=>{setItem("dish"); setItem("drink"); setItem("sides"); cartIsEmpty(true); showCartIcon(true); setTimeout(()=>navigate("/"),4000);}} className="trash">🗑️</td> : null}
+                    <td key={nanoid()} className="menu-bold">{menu.dish?.title}</td>
+                    <td key={nanoid()} className="menu-bold">{menu.dish?.price} kr</td>
+                    {title == "Cart" ? <td key={nanoid()} onClick={cart.length == 1 ? ()=>{removeItem("dish", menu.id); onEmptyCart()} : ()=>removeItem("dish", menu.id)} className="trash">🗑️</td> : null}
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
                 </tr>
-                    {cartItem.sides ? cartItem.sides.map(side => <tr><td key={side._id}>{side.title}</td><td>{side.price} kr</td>
-                    {title == "Cart" ? <td onClick={()=>removeSide(side)} className="trash">🗑️</td> : null}</tr>) : null}
+                    {menu.sides ? menu.sides.map(side => <tr><td key={nanoid()} className="menu-light">{side.title}</td><td className="menu-light-price" key={nanoid()}>{side.price} kr</td>
+                    {title == "Cart" ? <td onClick={()=>removeSide(side, menu.id)} className="trash" key={nanoid()}>🗑️</td> : null}</tr>) : null}
                     
-                    {/* <td>{cartItem.sides?.reduce<number>((acc: Item, curr: Item) => side.price + prev.price)} kr</td> */}
+                    {/* <td>{menu.sides?.reduce<number>((acc: Item, curr: Item) => side.price + prev.price)} kr</td> */}
                     
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
                 <tr>
-                </tr>
-                <tr>
-                    <td>{cartItem.drink?.title}</td>
-                    <td>{cartItem.drink?.price}{cartItem.drink ? "kr" : null}</td>
-                    {(title == "Cart" && cartItem.drink) ? <td onClick={()=>setItem("drink")} className="trash">🗑️</td> : null}
+                    <td className="menu-light" key={nanoid()}>{menu.drink?.title}</td>
+                    <td className="menu-light-price" key={nanoid()}>{menu.drink?.price}{menu.drink ? "kr" : null}</td>
+                    {(title == "Cart" && menu.drink) ? <td onClick={()=>removeItem("drink", menu.id)} className="trash" key={nanoid()}>🗑️</td> : null}
                     {/* <td className="cartRemoveItem"><button>remove item</button></td> */}
+                
                 </tr>
+                <tr><td  key={nanoid()} colSpan={3}><hr/></td></tr>
+                </>) : <>{cartIsEmpty(true)}</>}
                 <tr className="cartCost">
-                    <td><strong>Total Price:</strong></td>
-                    <td colSpan={2} className="cartTotal"><strong>{total} kr</strong></td>
+                    <td key={nanoid()}><strong>Total Price:</strong></td>
+                    <td colSpan={2} className="cart-total" key={nanoid()}><strong>{total} kr</strong></td>
                 </tr>
             </tbody>
         </table>

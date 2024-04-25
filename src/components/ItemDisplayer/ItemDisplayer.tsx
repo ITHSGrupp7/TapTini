@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Item } from "../../service/Service"
+import { Item} from "../../service/Service"
 import './style.css'
 
-type UsingProps = {
-    currentItem: Item | undefined,
-    callback: any
+type ItemProps = {
+    currentItem: Item | undefined;
+    callback: (item : Item) => void
 }
 
-const ItemDisplayer = ({ currentItem, callback }: UsingProps) => {
+const ItemDisplayer = ({ currentItem, callback}: ItemProps) => {
     const renderThis = !currentItem ? <></>
         : <div className="item-displayer">
 

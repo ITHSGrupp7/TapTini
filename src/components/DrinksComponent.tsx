@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 import './DrinksComponent.css'
 import { NavLink } from "react-router-dom";
-import { Item } from "../service/Service";
+import { Item} from "../service/Service";
 
 // const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
 type DrinkProps = {
-  dishName: string | undefined;
-  callback: (item: Item | undefined) => void;
+  callback: (item: Item) => void;
   showCartIcon : (value : boolean) => void;
+  dishName : string | undefined
 }
 
 export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
@@ -43,10 +43,10 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
       })
 
   }, [])
-
   const setDrinkSuggestion = (): Drink | undefined => {
-    if (drinks != undefined) {
-      switch (dishName ?? "") {
+    
+    if (drinks !== undefined) {
+      switch (dishName) {
         case "Räkor":
           return drinks[3]
         case "Vegansk Jackfruit":
@@ -130,6 +130,7 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
                   <button className="navigation-button" onClick={() => {showCartIcon(false); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
                 </NavLink>
                 <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
+                <NavLink to="/cart" onClick={()=>showCartIcon(false)}><button className="navigation-button">Fortsätt utan drink</button></NavLink>
 
               </div>
             </div>

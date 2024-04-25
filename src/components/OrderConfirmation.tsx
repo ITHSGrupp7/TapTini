@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import CartComponent from "./CartComponent";
-import { CartItem } from "../service/Service";
+import { Menu} from "../service/Service";
 import { useState } from "react";
 
 
@@ -37,13 +37,14 @@ const returnOrderNumber = () => {
 }
 
 type OrderConfirmationProps = {
+    cart : Menu[],
     cookingTime : number | undefined,
-    callback: () => void,
-    cartItem : CartItem,
+    callback : () => void,
+    addMenu : () => void,
     showCartIcon : (value : boolean) => void
 }
 
-const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : OrderConfirmationProps) => {
+const OrderConfirmation = ({ cookingTime, cart, addMenu, callback, showCartIcon} : OrderConfirmationProps) => {
     
     const [payment, setPayment] = useState(false);
     const [clicked, setClicked] = useState(false);
@@ -54,13 +55,13 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : Or
         payment ? (
         <>
             
-            <CartComponent cartItem={cartItem} title="Kvitto" setItem={()=>{}} removeSide={()=>{}} showCartIcon={()=>{}}/>
+            <CartComponent cart={cart} title="Kvitto" removeItem={()=>{}} removeSide={()=>{}} showCartIcon={()=>{}}/>
             <h3 style={{marginTop:"1rem"}}>Ditt ordernummer är: {returnOrderNumber()}</h3>
 
             <h3 style={{margin:"1rem"}}>Din order beräknas ta {cookingTime} minuter</h3>
 
             <NavLink to="/">
-                <button className="navigation-button" onClick={()=>{callback(); showCartIcon(true)}}>NY BESTÄLLNING</button>
+                <button className="navigation-button" onClick={()=>{callback();showCartIcon(true)}}>NY BESTÄLLNING</button>
             </NavLink>
         </>
         ) :  (
@@ -74,7 +75,7 @@ const OrderConfirmation = ({ cookingTime, callback, cartItem, showCartIcon} : Or
                 BETALA {total} kr
                 </button>
                 <p style={{fontWeight:"bolder", fontSize:"1.2rem"}}>ELLER</p>
-                <button className="redirection-button" onClick={()=>{navigate("/"); showCartIcon(true)}}>
+                <button className="redirection-button" onClick={()=>{navigate("/"); showCartIcon(true); addMenu()}}>
                     Lägg till fler rätter</button>
                 </>)}
                 

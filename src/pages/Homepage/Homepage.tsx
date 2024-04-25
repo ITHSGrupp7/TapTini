@@ -6,7 +6,11 @@ import './style.css'
 
 const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
 
-const Homepage = (props: {callback: (item : Item | undefined) => void}) => {
+type HomeProps = {
+callback: (item : Item) => void
+}
+
+const Homepage = ({callback} : HomeProps) => {
     const [items, setItems] = useState<Item[] | undefined>(undefined);
     const [currentItem, setCurrentItem] = useState<Item>();
 
@@ -29,7 +33,7 @@ const Homepage = (props: {callback: (item : Item | undefined) => void}) => {
     return (
         <main className="content-wrapper">
             <ItemSelector items={items} setCurrentItem={setCurrentItem} />
-            <ItemDisplayer currentItem={currentItem} callback={props.callback} />
+            <ItemDisplayer currentItem={currentItem} callback={callback}/>
         </main>
     )
 }
