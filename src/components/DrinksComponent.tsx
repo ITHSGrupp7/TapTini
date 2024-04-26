@@ -81,32 +81,6 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
       {
 
         showAll ?
-
-          // <div className="drink-container">
-          //   <h1>Välj din cocktail!</h1>
-          //   {drinks?.map(drink => drinkItem(drink))}
-          // </div>
-          // :
-          // <div className="drink-container">
-          //   <h1>Perfekt cocktail till {props.dishName}:</h1>
-
-          //   <div className="image-container">
-          //     <header>
-          //     <a href="#">
-          //       <img src={setDrinkSuggestion()?.strDrinkThumb} />
-          //     </a>
-          //     </header>
-          //   </div>
-
-          //   <h2>{setDrinkSuggestion()?.strDrink}</h2>
-          //   <div className="">
-          //     <NavLink to="/cart">
-          //       <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
-          //     </NavLink>
-          //     <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
-          //   </div>
-          // </div>
-
           <div className="drinks-wrapper">
             <h1>Välj din cocktail!</h1>
             <div className="productlist__wrapper">
@@ -135,15 +109,8 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
               </div>
             </div>
           </article>
-
-
-
-
-
-
       }
     </>
-
   );
 }
 
