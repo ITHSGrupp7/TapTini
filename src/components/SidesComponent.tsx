@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidesComponent.css';
-import { Item} from '../service/Service';
+import { Item } from '../service/Service';
 
 type Side = {
     name: string;
@@ -19,34 +19,12 @@ const sideItems: Side[] = [
 ];
 
 type SideProps = {
-    callback: (item: Item[]) => void
+    addSides: (item: Item[]) => void
 }
 
-const SidesComponent = ({callback} : SideProps) => {
+function SidesComponent({ addSides }: SideProps) {
 
     const [items, setItems] = useState<Side[]>(sideItems)
-
-    function onItemClick(index: number): void {
-        const newItems: Side[] = [...items]
-        newItems[index].isSelected = !newItems[index].isSelected
-        setItems([...newItems])
-    }
-
-    useEffect(() => {
-        console.log(sideItems)
-        setItems(sideItems.map(item => { return { ...item, isSelected: false } }))
-    }, [])
-
-
-    // const dispatch = useDispatch(); // Initialize useDispatch hook
-
-    // const handleItemClick = (item: Side
-    // ) => {
-    //     dispatch(addToCart({ // Dispatch addToCart action with selected item data as payload
-    //         name: item.name,
-    //         price: item.price
-    //     }));
-    // };
 
     return (
         <div className='item-selector-wrapper'>
@@ -56,7 +34,7 @@ const SidesComponent = ({callback} : SideProps) => {
                         items &&
                         Array.isArray(items) &&
                         items.map((item, index) => (
-                            <button className={"sidesButton"} key={index} onClick={() => onItemClick(index)}
+                            <button className={"sidesButton"} key={index} onClick={() => handleOnItemClick(index)}
                                 style={{ borderRadius: 8 }}>
                                 <span className="item__title">{item.name}</span>
                                 <span className="item__title">{item.price}kr</span>
@@ -74,22 +52,34 @@ const SidesComponent = ({callback} : SideProps) => {
             </NavLink>
 
             <NavLink to="/drink">
-                <button className="navigation-button" onClick={() => {
-                    const selectedItems = items.filter(side => side.isSelected)
-                    const sides: Item[] = selectedItems.map(side => {
-                        return {
-                            _id: items.indexOf(side).toString(),
-                            title: side.name,
-                            price: side.price,
-                        }
-                    })
-                    setItems(sideItems)
-                    callback(sides)
-
-                }}>GÅ VIDARE</button>
+                <button className="navigation-button" onClick={() => handleChooseSelected()}>
+                    GÅ VIDARE
+                </button>
             </NavLink>
         </div>
-    );
-};
+    )
+
+
+    // Event-handlers
+    function handleOnItemClick(index: number): void {
+        setItems(prevItems => prevItems.map((item, i) => (
+            {
+                ...item,
+                isSelected: i === index ? !item.isSelected : item.isSelected
+            })))
+    }
+
+    function handleChooseSelected() {
+        const selectedItems = items.filter(side => side.isSelected);
+        const sides: Item[] = selectedItems.map((side, i) => {
+            return {
+                _id: i.toString(),
+                title: side.name,
+                price: side.price,
+            };
+        });
+        addSides(sides);
+    }
+}
 
 export default SidesComponent;

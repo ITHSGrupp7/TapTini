@@ -4,10 +4,10 @@ import './style.css'
 
 type ItemProps = {
     currentItem: Item | undefined;
-    callback: (item : Item) => void
+    addDish: (item : Item) => void
 }
 
-const ItemDisplayer = ({ currentItem, callback}: ItemProps) => {
+const ItemDisplayer = ({ currentItem, addDish}: ItemProps) => {
     const renderThis = !currentItem ? <></>
         : <div className="item-displayer">
 
@@ -34,7 +34,7 @@ const ItemDisplayer = ({ currentItem, callback}: ItemProps) => {
                 <img src={currentItem.imageUrl} alt="Huvudrätt" width="500px" />
             </div>
             <NavLink to="/sides">
-                <button className="navigation-button" onClick={() => callback(currentItem)}>GÅ VIDARE</button>
+                <button className="navigation-button" onClick={() => addDish(currentItem)}>GÅ VIDARE</button>
             </NavLink>
         </div>
 

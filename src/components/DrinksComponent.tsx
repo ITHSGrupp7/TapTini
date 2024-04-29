@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 
 import './DrinksComponent.css'
 import { NavLink } from "react-router-dom";
-import { Item} from "../service/Service";
-
-// const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
+import { Item } from "../service/Service";
 
 type DrinkProps = {
-  callback: (item: Item) => void;
-  showCartIcon : (value : boolean) => void;
-  dishName : string | undefined
+  chooseDrink: (item: Item) => void;
+  dishName: string | undefined
 }
 
-export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
+export function GetDrinks({ dishName, chooseDrink }: DrinkProps) {
 
   type Drink = {
     strDrink: string;
@@ -43,8 +40,64 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
       })
 
   }, [])
-  const setDrinkSuggestion = (): Drink | undefined => {
-    
+
+  return (
+    <>
+      {
+
+        showAll ?
+          <div className="drinks-wrapper">
+            <h1>Välj din cocktail!</h1>
+            <div className="productlist__wrapper">
+              <div className="product__list">
+                {drinks?.map(drink => drinkItem(drink))}
+              </div>
+            </div>
+          </div>
+          :
+          <article style={{ '--isRecommended': 'true' } as React.CSSProperties}>
+            <div className="product">
+              <header className="product__art">
+                <img src={setDrinkSuggestion()?.strDrinkThumb} />
+              </header>
+              <h2 className="product__title">
+                Perfekt cocktail till {dishName}
+              </h2>
+              <div className="product__infos">
+
+                <NavLink to="/cart">
+                  <button className="navigation-button" onClick={() => handleClickSuggestedDrink()}>
+                    Välj denna drink
+                  </button>
+                </NavLink>
+                <button className="navigation-button" onClick={() => setShowAll(true)}>
+                  Gör ditt egna val
+                </button>
+                <NavLink to="/cart">
+                  <button className="navigation-button">
+                    Fortsätt utan drink
+                  </button>
+                </NavLink>
+
+              </div>
+            </div>
+          </article>
+      }
+    </>
+  );
+
+  // Event-handlers
+  function handleClickSuggestedDrink() {
+    chooseDrink({
+      _id: setDrinkSuggestion()!.idDrink,
+      title: setDrinkSuggestion()!.strDrink,
+      price: setDrinkSuggestion()!.price
+    })
+  }
+
+  // Helper-functions
+  function setDrinkSuggestion(): Drink | undefined {
+
     if (drinks !== undefined) {
       switch (dishName) {
         case "Räkor":
@@ -65,52 +118,17 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
     }
   }
 
-  const drinkItem = (drink: Drink) => (
-    <div key={drink.idDrink} className="drink-choice">
-      <NavLink to="/cart">
-        <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => {
-          showCartIcon(false);
-          callback({ _id: drink.idDrink, title: drink.strDrink, price: drink.price })}} />
-      </NavLink>
-      <h3 className="drink-choise-text">{drink.strDrink}</h3>
-    </div>
-  )
-
-  return (
-    <>
-      {
-
-        showAll ?
-          <div className="drinks-wrapper">
-            <h1>Välj din cocktail!</h1>
-            <div className="productlist__wrapper">
-              <div className="product__list">
-                {drinks?.map(drink => drinkItem(drink))}
-              </div>
-            </div>
-          </div>
-          :
-          <article style={{'--isRecommended': 'true'} as React.CSSProperties}>
-            <div className="product">
-              <header className="product__art">
-                <img src={setDrinkSuggestion()?.strDrinkThumb} />
-              </header>
-              <h2 className="product__title">
-                Perfekt cocktail till {dishName}
-              </h2>
-              <div className="product__infos">
-
-                <NavLink to="/cart">
-                  <button className="navigation-button" onClick={() => {showCartIcon(false); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
-                </NavLink>
-                <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
-                <NavLink to="/cart" onClick={()=>showCartIcon(false)}><button className="navigation-button">Fortsätt utan drink</button></NavLink>
-
-              </div>
-            </div>
-          </article>
-      }
-    </>
-  );
+  function drinkItem(drink: Drink) {
+    return (
+      <div key={drink.idDrink} className="drink-choice">
+        <NavLink to="/cart">
+          <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => {
+            chooseDrink({ _id: drink.idDrink, title: drink.strDrink, price: drink.price })
+          }} />
+        </NavLink>
+        <h3 className="drink-choise-text">{drink.strDrink}</h3>
+      </div>
+    )
+  }
 }
 
