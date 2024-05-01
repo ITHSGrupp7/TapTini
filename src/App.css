@@ -37,22 +37,43 @@
 }
 
 .header {
+  /* border: 3px dashed limegreen; */
   padding: 1rem;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding-left: 4rem;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: row; */
+  /* justify-content: flex-end; */
+  /* padding-left: 4rem; */
+ 
 }
 
+/* .header > * {
+  border: 1px solid red;
+} */
+
+
 #basket {
+  /* position: absolute; */
   cursor: pointer;
-  background-image: url(src/assets/images/basket-icon-40.png);
+  background-image: url('./assets/images/CartEmpty.svg');
   background-repeat: no-repeat;
   background-size: contain;
   width: 3rem;
   height: 3rem;
-  translate: 1rem 2rem;
-  border-radius: 1rem;
+  /* translate: 1rem 2rem; */
+  filter: invert(1) hue-rotate(20deg);
+}
+
+#basketFilled {
+  cursor: pointer;
+  background-image: url('./assets/images/CartFilled.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(1) hue-rotate(180deg);
+  width: 3rem;
+  height: 3rem;
+  /* translate: 1rem 2rem; */
 }
 
 .header img {
@@ -211,3 +232,20 @@
     transform: rotate(360deg);
   }
 }
+
+.cartPositioning {
+  padding-bottom: 2rem;
+}
+.cartIcon {
+  position: absolute;
+} 
+
+.cartCounter {
+  position: relative;
+  top: -.45rem;
+  left: 2.4rem;
+  background-color:var(--font-hover-color);
+  padding: .25rem 0.55rem;
+  border-radius: 1rem;
+} 
+

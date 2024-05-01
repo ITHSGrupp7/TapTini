@@ -13,6 +13,7 @@ function App() {
   const menuId = useRef(nanoid());
   const [cart, setCart] = useState<Menu[]>([{ id: menuId.current }]);
   const navigate = useNavigate();
+  const [isCartEmpty, setIsCartEmpty] = useState(true);
 
   return (
     <div className="page-wrapper">
@@ -20,9 +21,16 @@ function App() {
         <NavLink to={"/"}>
           <img src="/logo.svg" alt="logo" />
         </NavLink>
-        {showPopUpCart() && <div>
-          <div id="basket" onClick={toggleCart}></div>
-        </div>}
+        {showPopUpCart() && (
+        <>
+        <div className="cartPositioning">
+          <div className='cartIcon' id={isCartEmpty ? "basket" : "basketFilled"} onClick={toggleCart}>
+          </div>
+          <div className='cartCounter'>
+            <span>{countItemsInCart()}</span>
+          </div>
+        </div>
+           </>)}
       </div>
 
       <Routes>
@@ -95,15 +103,18 @@ function App() {
   function onEmptyCart() {
     initializeCart();
     navigate("/");
-    setTimeout(() => {document.getElementById("cart")?.classList.add("cart-hidden")}, 4000);
+    setTimeout(() => { document.getElementById("cart")?.classList.add("cart-hidden") }, 4000);
   }
 
   function initializeCart() {
+
+    setIsCartEmpty(true)
     menuId.current = nanoid();
     setCart([{ id: menuId.current }]);
   }
 
   function addDish(_dish: Item) {
+    setIsCartEmpty(false)
     setCart(cart => cart.map(menu => {
       if (menu.id === menuId.current) {
         return { ...menu, dish: _dish }
@@ -145,6 +156,7 @@ function App() {
     return cart.find(menu => menu.id === menuId.current)?.dish?.title
   }
 
+  // TODO: Get max cooking time. Math.max(...times);
   function getCookingTime(): number | undefined {
     return cart?.find(_menu => _menu.id === menuId.current)?.dish?.timeInMins
   }
@@ -156,6 +168,19 @@ function App() {
     const isDrink = location.pathname.includes('/drink')
     return isRoot || isSides || isDrink
   }
+
+  function countItemsInCart(): number {
+    let counter = 0;
+    cart.forEach(menu => {
+      counter += menu.dish ? 1 : 0
+      menu.sides?.forEach(_ => {
+        counter += 1
+      })
+      counter += menu.drink ? 1 : 0
+    })
+    return counter
+  }
+
 
 }
 
