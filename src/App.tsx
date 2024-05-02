@@ -25,7 +25,7 @@ const App = () => {
     dispatch(resetCart());
     dispatch(resetId());
     navigate("/"); 
-    setTimeout(()=>toggleCart(),4000);
+    setTimeout(()=>toggleCart(),2000);
   }
 
   return (

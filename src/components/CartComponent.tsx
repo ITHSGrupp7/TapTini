@@ -22,7 +22,7 @@ const CartComponent = ({title} : {title: string}) => {
         dispatch(resetCart());
         cartIsEmpty(true); 
         dispatch(showCartIcon(true));
-        setTimeout(()=>navigate("/"),4000);
+        setTimeout(()=>navigate("/"),2000);
     };
         
     return !isCartEmpty ? <div className="cartTable">
