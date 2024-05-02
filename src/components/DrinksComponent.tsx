@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
-
 import './DrinksComponent.css'
 import { NavLink } from "react-router-dom";
-import { Item} from "../service/Service";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import { addDrink } from "../state/cart/cartSlice";
+import { showCartIcon } from "../state/cartIcon/cartIconSlice";
 
-// const trimTitle = (title: string) => title.split(' ').slice(1).join(' ');
-
-type DrinkProps = {
-  callback: (item: Item) => void;
-  showCartIcon : (value : boolean) => void;
-  dishName : string | undefined
-}
-
-export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
+export const GetDrinks = () => {
 
   type Drink = {
     strDrink: string;
@@ -21,6 +15,10 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
     price: number;
   }
 
+  const dispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.cart)
+  const menuId = useSelector((state: RootState) => state.id)
+  const dishName = cart.find(menu => menu.id === menuId)?.dish?.title
   const [drinks, setDrinks] = useState<Drink[] | undefined>(undefined);
   const [showAll, setShowAll] = useState<boolean>(false)
 
@@ -69,8 +67,12 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
     <div key={drink.idDrink} className="drink-choice">
       <NavLink to="/cart">
         <img className="drink-choise-img" src={drink.strDrinkThumb} onClick={() => {
-          showCartIcon(false);
-          callback({ _id: drink.idDrink, title: drink.strDrink, price: drink.price })}} />
+          dispatch(showCartIcon(false));
+          dispatch(addDrink({item:{ 
+            _id: drink.idDrink, 
+            title: drink.strDrink, 
+            price: drink.price }, 
+            menuId: menuId}))}}/>
       </NavLink>
       <h3 className="drink-choise-text">{drink.strDrink}</h3>
     </div>
@@ -81,32 +83,6 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
       {
 
         showAll ?
-
-          // <div className="drink-container">
-          //   <h1>Välj din cocktail!</h1>
-          //   {drinks?.map(drink => drinkItem(drink))}
-          // </div>
-          // :
-          // <div className="drink-container">
-          //   <h1>Perfekt cocktail till {props.dishName}:</h1>
-
-          //   <div className="image-container">
-          //     <header>
-          //     <a href="#">
-          //       <img src={setDrinkSuggestion()?.strDrinkThumb} />
-          //     </a>
-          //     </header>
-          //   </div>
-
-          //   <h2>{setDrinkSuggestion()?.strDrink}</h2>
-          //   <div className="">
-          //     <NavLink to="/cart">
-          //       <button className="navigation-button" onClick={() => props.callback({_id: setDrinkSuggestion()?.idDrink!, title: setDrinkSuggestion()?.strDrink!, price: setDrinkSuggestion()?.price!})}>Välj denna drink</button>
-          //     </NavLink>
-          //     <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
-          //   </div>
-          // </div>
-
           <div className="drinks-wrapper">
             <h1>Välj din cocktail!</h1>
             <div className="productlist__wrapper">
@@ -127,20 +103,18 @@ export const GetDrinks = ({dishName, callback, showCartIcon} : DrinkProps) => {
               <div className="product__infos">
 
                 <NavLink to="/cart">
-                  <button className="navigation-button" onClick={() => {showCartIcon(false); callback({ _id: setDrinkSuggestion()!.idDrink, title: setDrinkSuggestion()!.strDrink, price: setDrinkSuggestion()!.price})}}>Välj denna drink</button>
+                  <button className="navigation-button" onClick={() => {dispatch(showCartIcon(false)); dispatch(addDrink({item:{ 
+                    _id: setDrinkSuggestion()!.idDrink, 
+                    title: setDrinkSuggestion()!.strDrink, 
+                    price: setDrinkSuggestion()!.price}, 
+                    menuId: menuId}))}}>Välj denna drink</button>
                 </NavLink>
                 <button className="navigation-button" onClick={() => setShowAll(true)}>Gör ditt egna val</button>
-                <NavLink to="/cart" onClick={()=>showCartIcon(false)}><button className="navigation-button">Fortsätt utan drink</button></NavLink>
+                <NavLink to="/cart" onClick={()=>dispatch(showCartIcon(false))}><button className="navigation-button">Fortsätt utan drink</button></NavLink>
 
               </div>
             </div>
           </article>
-
-
-
-
-
-
       }
     </>
 

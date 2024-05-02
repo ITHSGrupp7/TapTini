@@ -1,24 +1,12 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import CartComponent from "./CartComponent";
-import { Menu} from "../service/Service";
 import { useState } from "react";
-
-
-// function getOrderNumber(): number {
-//     let orderNrStorage: string | null = localStorage.getItem('ordernumber')
-//     // let ordernumber: number | null = localStorage.getItem('ordernumber')===null ? null : parseInt(localStorage.getItem('ordernumber')!) 
-//     let ordernumber: number = 0;
-//     if (orderNrStorage === null) {
-//         console.log("Order nr is null!")
-//         localStorage.setItem("ordernumber", "1");
-//         // ordernumber = 1;
-//     } else {
-//         ordernumber = parseInt(localStorage.getItem('ordernumber')!);
-//         ordernumber++;
-//         localStorage.setItem("ordernumber", ordernumber.toString());
-//     }
-//     return ordernumber
-// }
+import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { resetId, setId } from "../state/id/idSlice";
+import { addMenu, resetCart } from "../state/cart/cartSlice";
+import { RootState } from "../state/store";
+import { showCartIcon } from "../state/cartIcon/cartIconSlice";
 
 const returnOrderNumber = () => {
     const cachedOrderNumberString : string | null = localStorage.getItem("ordernumber");
@@ -36,32 +24,43 @@ const returnOrderNumber = () => {
     return newOrderNumber;
 }
 
-type OrderConfirmationProps = {
-    cart : Menu[],
-    cookingTime : number | undefined,
-    callback : () => void,
-    addMenu : () => void,
-    showCartIcon : (value : boolean) => void
-}
-
-const OrderConfirmation = ({ cookingTime, cart, addMenu, callback, showCartIcon} : OrderConfirmationProps) => {
+const OrderConfirmation = () => {
     
+    
+    const dispatch = useDispatch();
+    const cart = useSelector((state: RootState) => state.cart)
+    const menuId = useSelector((state: RootState) => state.id)
+    const cookingTime = cart?.find(_menu => _menu.id === menuId)?.dish?.timeInMins
     const [payment, setPayment] = useState(false);
     const [clicked, setClicked] = useState(false);
     const {total} = useParams<{total: string}>();
     const navigate = useNavigate();
 
+    const resetAll = () => {
+        dispatch(resetId());
+        dispatch(resetCart());
+        dispatch(showCartIcon(true));
+    }
+    
+    const addNewMenu = () => {
+        const newId = nanoid();
+        dispatch(setId(newId));
+        dispatch(addMenu(newId));
+        dispatch(showCartIcon(true));
+        navigate("/");
+    }
+
     return (
         payment ? (
         <>
             
-            <CartComponent cart={cart} title="Kvitto" removeItem={()=>{}} removeSide={()=>{}} showCartIcon={()=>{}}/>
+            <CartComponent title="Kvitto" />
             <h3 style={{marginTop:"1rem"}}>Ditt ordernummer är: {returnOrderNumber()}</h3>
 
             <h3 style={{margin:"1rem"}}>Din order beräknas ta {cookingTime} minuter</h3>
 
             <NavLink to="/">
-                <button className="navigation-button" onClick={()=>{callback();showCartIcon(true)}}>NY BESTÄLLNING</button>
+                <button className="navigation-button" onClick={resetAll}>NY BESTÄLLNING</button>
             </NavLink>
         </>
         ) :  (
@@ -75,7 +74,7 @@ const OrderConfirmation = ({ cookingTime, cart, addMenu, callback, showCartIcon}
                 BETALA {total} kr
                 </button>
                 <p style={{fontWeight:"bolder", fontSize:"1.2rem"}}>ELLER</p>
-                <button className="redirection-button" onClick={()=>{navigate("/"); showCartIcon(true); addMenu()}}>
+                <button className="redirection-button" onClick={addNewMenu}>
                     Lägg till fler rätter</button>
                 </>)}
                 

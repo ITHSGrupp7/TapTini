@@ -1,13 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { Item} from "../../service/Service"
 import './style.css'
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { addDish } from "../../state/cart/cartSlice";
 
 type ItemProps = {
     currentItem: Item | undefined;
-    callback: (item : Item) => void
 }
 
-const ItemDisplayer = ({ currentItem, callback}: ItemProps) => {
+const ItemDisplayer = ({ currentItem}: ItemProps) => {
+    const dispatch = useDispatch();
+    const menuId = useSelector((state: RootState) => state.id);
     const renderThis = !currentItem ? <></>
         : <div className="item-displayer">
 
@@ -34,7 +38,7 @@ const ItemDisplayer = ({ currentItem, callback}: ItemProps) => {
                 <img src={currentItem.imageUrl} alt="Huvudrätt" width="500px" />
             </div>
             <NavLink to="/sides">
-                <button className="navigation-button" onClick={() => callback(currentItem)}>GÅ VIDARE</button>
+                <button className="navigation-button" onClick={()=>dispatch(addDish({item: currentItem, menuId: menuId}))}>GÅ VIDARE</button>
             </NavLink>
         </div>
 

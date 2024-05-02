@@ -3,15 +3,15 @@ import App from './App.tsx'
 import './index.css'
 import React from 'react'
 import { BrowserRouter } from "react-router-dom"
-// import { Provider } from "react-redux"
-// import { store } from "./state/store.ts"
+import { Provider } from "react-redux"
+import { store } from "./state/store.ts"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <App />
-    {/* </Provider> */}
+    </Provider>
     </BrowserRouter>
-  // </React.StrictMode>,
+  </React.StrictMode>,
 )

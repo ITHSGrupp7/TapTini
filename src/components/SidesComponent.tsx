@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidesComponent.css';
 import { Item} from '../service/Service';
+import { useDispatch, useSelector } from 'react-redux';
+import { addSides } from '../state/cart/cartSlice';
+import { RootState } from '../state/store';
 
 type Side = {
     name: string;
@@ -18,12 +21,10 @@ const sideItems: Side[] = [
     { name: "Skaldjur", price: 159, isSelected: false },
 ];
 
-type SideProps = {
-    callback: (item: Item[]) => void
-}
+const SidesComponent = () => {
 
-const SidesComponent = ({callback} : SideProps) => {
-
+    const dispatch = useDispatch();
+    const menuId = useSelector((state: RootState) => state.id)
     const [items, setItems] = useState<Side[]>(sideItems)
 
     function onItemClick(index: number): void {
@@ -36,17 +37,6 @@ const SidesComponent = ({callback} : SideProps) => {
         console.log(sideItems)
         setItems(sideItems.map(item => { return { ...item, isSelected: false } }))
     }, [])
-
-
-    // const dispatch = useDispatch(); // Initialize useDispatch hook
-
-    // const handleItemClick = (item: Side
-    // ) => {
-    //     dispatch(addToCart({ // Dispatch addToCart action with selected item data as payload
-    //         name: item.name,
-    //         price: item.price
-    //     }));
-    // };
 
     return (
         <div className='item-selector-wrapper'>
@@ -84,7 +74,7 @@ const SidesComponent = ({callback} : SideProps) => {
                         }
                     })
                     setItems(sideItems)
-                    callback(sides)
+                    dispatch(addSides({items: sides, menuId: menuId}))
 
                 }}>GÅ VIDARE</button>
             </NavLink>
