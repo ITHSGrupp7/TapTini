@@ -10,10 +10,23 @@ import OrderConfirmation from './components/OrderConfirmation'
 import { nanoid } from '@reduxjs/toolkit'
 
 function App() {
+
+  const location = useLocation();
+  const storedCart = localStorage.getItem('cart');
   const menuId = useRef(nanoid());
-  const [cart, setCart] = useState<Menu[]>([{ id: menuId.current }]);
+  const initialCart = storedCart ? JSON.parse(storedCart) : [{ id: menuId.current }];
+
+  const [cart, setCart] = useState<Menu[]>(initialCart);
   const navigate = useNavigate();
-  const [isCartEmpty, setIsCartEmpty] = useState(true);
+
+  const [isCartEmpty, setIsCartEmpty] = useState(cart[0]?.dish ? false : true);
+
+  useEffect(() => {
+    const storedPath = localStorage.getItem('path');
+    if (storedPath) {
+      navigate(storedPath)
+    }
+  }, []);
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -24,7 +37,13 @@ function App() {
     if (cart.length === 1 && !cart[0].dish) {
       setIsCartEmpty(true)
     }
-  }, [cart])
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem('path', location.pathname);
+  }, [location]);
 
   return (
     <div className="page-wrapper">
@@ -101,6 +120,7 @@ function App() {
       }
       return menu;
     }));
+
   }
 
   function addSides(_sides: Item[]) {
