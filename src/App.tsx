@@ -11,14 +11,16 @@ import { removeItem, removeSide, resetCart } from './state/cart/cartSlice'
 import { RootState } from './state/store'
 import { nanoid } from '@reduxjs/toolkit'
 import { showCartIcon } from './state/cartIcon/cartIconSlice'
+import { Menu } from './service/Service'
 
 const App = () => {
   
   const dispatch = useDispatch();
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart) as Menu[];
   const cartIcon = useSelector((state: RootState) => state.cartIcon);
   const toggleCart = () => document.getElementById("cart")?.classList.toggle("cart-hidden");
   const navigate = useNavigate(); 
+  
   const totalQuantity = cart.reduce((totalItems, menu) =>{
     let menuItems = 0;
     if (menu.dish){
