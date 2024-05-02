@@ -19,7 +19,19 @@ const App = () => {
   const cartIcon = useSelector((state: RootState) => state.cartIcon);
   const toggleCart = () => document.getElementById("cart")?.classList.toggle("cart-hidden");
   const navigate = useNavigate(); 
-  
+  const totalQuantity = cart.reduce((totalItems, menu) =>{
+    let menuItems = 0;
+    if (menu.dish){
+      menuItems++;
+    }
+    if (menu.drink){
+      menuItems++;
+    }
+    if (menu.sides){
+      menuItems += menu.sides!.length;
+    }
+    return totalItems + menuItems;
+},0)
   
   const onEmptyCart = () =>{
     dispatch(resetCart());
@@ -35,7 +47,7 @@ const App = () => {
           <img src="/logo.svg" alt="logo" onClick={()=>dispatch(showCartIcon(true))}/>
         </NavLink>
         {cartIcon ? <div>
-          <div id="basket" onClick={toggleCart}></div>
+          <div id="basket" onClick={toggleCart}>{totalQuantity > 0 ? <div id="quantityIcon">{totalQuantity}</div> : null}</div>
         </div> : null}
         
       </div>
