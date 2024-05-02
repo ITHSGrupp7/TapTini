@@ -9,8 +9,8 @@ const idSlice = createSlice({
         resetId: () => {
             return 'id';
         },
-        setId: (state, action : PayloadAction<string>) => {
-            return state = action.payload;
+        setId: (_, action : PayloadAction<string>) => {
+            return action.payload;
         }
     }
 });
