@@ -1,18 +1,15 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Item, Menu } from "../service/Service";
 import "./CartComponent.css"
-import { useState } from "react";
 
 type CartComponentProps = {
     cart: Menu[],
-    initializeCart: () => void;
     removeItem: (item: string, menuId: string) => void;
     removeSide: (side: Item, menuId: string) => void;
+    isCartEmpty: boolean;
 }
 
-function CartComponent({ cart, initializeCart, removeItem, removeSide }: CartComponentProps) {
-    const [isCartEmpty, setCartIsEmpty] = useState(false);
-    const navigate = useNavigate();
+function CartComponent({ cart, removeItem, removeSide, isCartEmpty }: CartComponentProps) {
     return !isCartEmpty ? <div className="cartTable">
         <h2>Cart</h2>
 
@@ -29,7 +26,7 @@ function CartComponent({ cart, initializeCart, removeItem, removeSide }: CartCom
                     <tr>
                         <td className="menu-bold">{menu.dish?.title}</td>
                         <td className="menu-bold">{menu.dish?.price} kr</td>
-                        <td onClick={handleDeleteMainDish(menu)} className="trash">🗑️</td>
+                        <td onClick={() => removeItem("dish", menu.id)} className="trash">🗑️</td>
                     </tr>
                     {menu.sides?.map(side => (
                         <tr key={side._id}>
@@ -44,7 +41,7 @@ function CartComponent({ cart, initializeCart, removeItem, removeSide }: CartCom
                         {menu.drink && <td onClick={() => removeItem("drink", menu.id)} className="trash" >🗑️</td>}
                     </tr>
                     <tr><td colSpan={3}><hr /></td></tr>
-                </tbody>) : <>{setCartIsEmpty(true)}</>}
+                </tbody>) : <></>}
             <tbody className="cartTableBody">
                 <tr className="cartCost">
                     <td ><strong>Total Price:</strong></td>
@@ -59,18 +56,6 @@ function CartComponent({ cart, initializeCart, removeItem, removeSide }: CartCom
 
     </div> : <p className="redirection-text">Vänligen välj huvudrätt</p>
 
-
-    // Event-handlers
-    function onEmptyCart() {
-        setCartIsEmpty(true);
-        initializeCart();
-        setTimeout(() => navigate("/"), 4000);
-    }
-
-    function handleDeleteMainDish(menu: Menu) {
-        return cart.length == 1 ? () => { removeItem("dish", menu.id); onEmptyCart(); } : () => removeItem("dish", menu.id);
-    }
-    
     // Helper-methods
     function total() {
         let sum = 0;

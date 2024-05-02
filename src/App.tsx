@@ -2,7 +2,7 @@ import Homepage from './pages/Homepage/Homepage'
 import './App.css'
 import { NavLink, Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import { GetDrinks } from './components/DrinksComponent'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import SidesComponent from './components/SidesComponent'
 import CartComponent from './components/CartComponent'
 import { Item, Menu } from './service/Service'
@@ -15,6 +15,17 @@ function App() {
   const navigate = useNavigate();
   const [isCartEmpty, setIsCartEmpty] = useState(true);
 
+  useEffect(() => {
+    if (cart.length === 0) {
+      initializeCart();
+      setTimeout(() => { navigate("/") }, 3000);
+    }
+    // Is dish undefined or null?
+    if (cart.length === 1 && !cart[0].dish) {
+      setIsCartEmpty(true)
+    }
+  }, [cart])
+
   return (
     <div className="page-wrapper">
       <div className="header">
@@ -22,15 +33,15 @@ function App() {
           <img src="/logo.svg" alt="logo" />
         </NavLink>
         {showPopUpCart() && (
-        <>
-        <div className="cartPositioning">
-          <div className='cartIcon' id={isCartEmpty ? "basket" : "basketFilled"} onClick={toggleCart}>
-          </div>
-          <div className='cartCounter'>
-            <span>{countItemsInCart()}</span>
-          </div>
-        </div>
-           </>)}
+          <>
+            <div className="cartPositioning">
+              <div className='cartIcon' id={isCartEmpty ? "basket" : "basketFilled"} onClick={toggleCart}>
+              </div>
+              <div className='cartCounter'>
+                <span>{countItemsInCart()}</span>
+              </div>
+            </div>
+          </>)}
       </div>
 
       <Routes>
@@ -51,9 +62,9 @@ function App() {
           element={
             <CartComponent
               cart={cart}
-              initializeCart={initializeCart}
               removeItem={removeItem}
               removeSide={removeSide}
+              isCartEmpty={isCartEmpty}
             />}
         />
         <Route path="/orderconfirmation/:total"
@@ -66,51 +77,20 @@ function App() {
             />}
         />
       </Routes>
-      <PopUpShoppingCart cart={cart} removeItem={removeItem} onEmptyCart={onEmptyCart} removeSide={removeSide} toggleCart={toggleCart} />
+      <PopUpShoppingCart cart={cart} removeItem={removeItem} removeSide={removeSide} toggleCart={toggleCart} isCartEmpty={isCartEmpty} />
     </div>
   )
 
-
   // Event-handlers, Callbacks
-  function removeItem(item: string, _menuId: string) {
-    switch (item) {
-      case "dish":
-        setCart(prevCart => prevCart.filter(menu => menu.id !== _menuId))
-        if (cart.length === 0) {
-          initializeCart();
-        }
-        break;
-      case "drink":
-        setCart(prevCart => prevCart.map(prevMenu => ({
-          ...prevMenu,
-          drink: prevMenu.id === _menuId ? undefined : prevMenu.drink
-        })))
-        break;
-    }
-  }
-
-  function removeSide(_side: Item, _menuId: string) {
-    setCart(cart => cart.map(menu => {
-      if (menu.id === _menuId) {
-        const updatedSides = menu.sides?.filter(side => side.title !== _side.title);
-        return { ...menu, sides: updatedSides };
-      } else {
-        return menu;
-      }
-    }));
-  }
-
-  function onEmptyCart() {
-    initializeCart();
-    navigate("/");
-    setTimeout(() => { document.getElementById("cart")?.classList.add("cart-hidden") }, 4000);
-  }
-
   function initializeCart() {
-
     setIsCartEmpty(true)
     menuId.current = nanoid();
-    setCart([{ id: menuId.current }]);
+    setCart(_ => [{ id: menuId.current }]);
+  }
+
+  function addMenu() {
+    menuId.current = nanoid();
+    setCart(cart => [...cart, { id: menuId.current }]);
   }
 
   function addDish(_dish: Item) {
@@ -141,11 +121,39 @@ function App() {
     }));
   }
 
-  function addMenu() {
-    menuId.current = nanoid();
-    setCart(cart => [...cart, { id: menuId.current }]);
+  function removeItem(item: string, _menuId: string) {
+    switch (item) {
+      case "dish":
+        // if (cart.length === 1) {
+        //   initializeCart();
+        //   setTimeout(() => { navigate("/") }, 3000);
+        //   return;
+        // }
+        // // Is dish undefined or null?
+        // if (cart.length === 2 && !cart[1].dish) {
+        //   setIsCartEmpty(true)
+        // }
+        setCart(prevCart => prevCart.filter(menu => menu.id !== _menuId))
+        break;
+      case "drink":
+        setCart(prevCart => prevCart.map(prevMenu => ({
+          ...prevMenu,
+          drink: prevMenu.id === _menuId ? undefined : prevMenu.drink
+        })))
+        break;
+    }
   }
 
+  function removeSide(_side: Item, _menuId: string) {
+    setCart(cart => cart.map(menu => {
+      if (menu.id === _menuId) {
+        const updatedSides = menu.sides?.filter(side => side.title !== _side.title);
+        return { ...menu, sides: updatedSides };
+      } else {
+        return menu;
+      }
+    }));
+  }
 
   // Helper-functions
   function toggleCart() {
@@ -180,31 +188,26 @@ function App() {
     })
     return counter
   }
-
-
 }
-
-export default App
 
 // Type for component below
 type PopUpCartType = {
   cart: Menu[]
   removeItem: (item: string, _menuId: string) => void
-  onEmptyCart: () => void
   removeSide: (_side: Item, _menuId: string) => void
   toggleCart: () => void
+  isCartEmpty: boolean
 }
 
 // Functional component
-function PopUpShoppingCart({ cart, removeItem, onEmptyCart, removeSide, toggleCart }: PopUpCartType) {
+function PopUpShoppingCart({ cart, removeItem, removeSide, toggleCart, isCartEmpty }: PopUpCartType) {
   return <div id='cart' className='cart-popup cart-hidden'>
     <div>
       <div className='cart-header'>
         <h3>Cart</h3>
         <span onClick={toggleCart}>❌</span>
       </div>
-      {/* Det finns alltid en Menu i cart men den kan sakna huvudrätt. */}
-      {(cart[0].dish ?
+      {(!isCartEmpty ?
         cart.map(_menu => <div key={_menu.id} className='cart-items'>
           {_menu.dish && (
             <>
@@ -212,7 +215,7 @@ function PopUpShoppingCart({ cart, removeItem, onEmptyCart, removeSide, toggleCa
                 <span className='cart-item-dish'>
                   {_menu.dish.title}
                 </span>
-                <span onClick={handleClickMainDish(_menu)} id='remove-icon'>
+                <span onClick={() => removeItem("dish", _menu.id)} id='remove-icon'>
                   🗑️
                 </span>
               </div>
@@ -230,16 +233,9 @@ function PopUpShoppingCart({ cart, removeItem, onEmptyCart, removeSide, toggleCa
             </>
           )}
         </div>)
-        : <p className="redirection-text">Vänligen välj huvudrätt</p>)}
+        : <><p className="redirection-text">Vänligen välj huvudrätt</p>{onEmptyCart()}</>)}
     </div>
   </div>
-
-
-  // Event-handlers
-  function handleClickMainDish(_menu: Menu) {
-    return cart.length == 1 ? () => { removeItem("dish", _menu.id); onEmptyCart() }
-      : () => removeItem("dish", _menu.id)
-  }
 
   // Helper-functions
   function sideItemRow(side: Item, _menu: Menu) {
@@ -254,7 +250,11 @@ function PopUpShoppingCart({ cart, removeItem, onEmptyCart, removeSide, toggleCa
       </div>)
   }
 
-
-
+  function onEmptyCart() {
+    setTimeout(() => { document.getElementById("cart")?.classList.add("cart-hidden") }, 3000);
+  }
 }
+
+export default App
+
 
