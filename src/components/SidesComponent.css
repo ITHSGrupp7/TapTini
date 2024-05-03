@@ -1,0 +1,51 @@
+:root {
+    --font-family-glory: 'Glory';
+    --font-family-bellota: "Bellota";
+    --font-family-bebas-neue: "Bebas Neue";
+    --font-weight-section-title: 200;
+    --font-weight-items: 400;
+    --font-size-item: 1.37rem;
+
+    --button-hoover-color: #E46D0E;
+}
+
+.navlink-item {
+    display: flex;
+}
+
+.sidesButton  {
+    flex: 1;
+    display: flex;
+    justify-content: space-between; /* To push title to left and price to right */
+    align-items: center; /* To vertically center the content */
+    padding: 10px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    border: none;
+    background-color: transparent;
+}
+
+.sidesButton span:nth-child(2){
+    margin-left: 2rem;
+}
+
+.sidesButton > * {
+    transition: transform .33s ease-in-out;
+}
+
+.sidesButton:hover > *:not(.checkmark) {
+    transform: translate(0%, -18%);
+    color: var(--button-hoover-color);
+}
+
+.checkmark {
+    position: absolute;
+    color: orange;
+    text-shadow: 2px 2px 2px black;
+    font-size: 20pt;
+    transform: translate(-50%, -33%);
+}
+
+.sidesButton:hover > .checkmark  {
+    transform: translate(-50%, -51%);
+}

@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap");
+
+:root {
+  --primary: #c06007;
+  --secondary: #c07607;
+  --background: #181310;
+  --white: #fff;
+  --black: #000;
+  --gray: #777;
+  --fontFamily: "Quicksand", sans-serif;
+  --fontWeightNormal: 400;
+  --fontSizeRoot: 20px;
+  --fontSizeLarge: 1.05rem;
+  --fontSizeSmall: 0.875rem;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+  font-size: var(--fontSizeRoot);
+}
+
+body {
+  font-family: var(--fontFamily);
+}
+
+.drinks-wrapper>h1 {
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* ------------------------ */
+/*         UI Style         */
+/* ------------------------ */
+
+.product {
+  position: relative;
+  width: 395px;
+  /* margin-top: 2rem; */
+  background-color: var(--black);
+  border: 10px solid transparent;
+  border-radius: 1rem;
+
+  &:before {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    padding: 0 0.4rem 0.2rem 0.4rem;
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0 0 0 0.5rem;
+  }
+}
+
+.product img {
+  border-radius: 1rem 1rem 0 0;
+}
+
+.product__art {
+  position: relative;
+}
+
+.product__art:hover .button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.product__infos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product__title {
+  margin-bottom: 10px;
+  font-size: var(--fontSizeLarge);
+}
+
+.product__link {
+  color: var(--black);
+}
+
+.product__link:hover {
+  text-decoration: underline;
+}
+
+.product__price {
+  display: block;
+  margin-bottom: 20px;
+  font-weight: var(--fontWeightNormal);
+}
+
+.product__brand {
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.productlist__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 2rem 2rem;
+}
+
+.product__list {
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.drink-choice {
+  max-width: 12rem;
+}
+
+
+
+
+
+/*----------------------------------------------------------------*/
+.product {
+  container-name: product;
+}
+
+/* -------- is new -------- */
+@container style(--isNew: true) {
+  .product {
+    border-color: var(--primary);
+
+    &::before {
+      content: "🔥 new";
+      background-color: var(--primary);
+    }
+  }
+}
+
+/* ------ is popular ------ */
+@container style(--isPopular: true) {
+  .product {
+    border-color: var(--secondary);
+
+    &::before {
+      content: "⭐ popular";
+      background-color: var(--secondary);
+    }
+  }
+}
+
+/* ------ is Recommended ------ */
+@container style(--isRecommended: true) {
+  .product {
+    border-color: #0c0c0c;
+
+    &::before {
+      content: "🔥Rekommenderas";
+      background-color: #000000;
+    }
+  }
+}

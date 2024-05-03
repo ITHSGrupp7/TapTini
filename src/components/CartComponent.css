@@ -1,0 +1,45 @@
+.cartTable{
+    background-color: rgba(0, 0, 0, 0.5);
+    color:whitesmoke;
+    text-align: center;
+    vertical-align: baseline;
+
+}
+
+.cartTableBody{
+    text-align:left;
+}
+.cart-total{
+  text-align: center;
+}
+.cartCost{
+    background-color: rgba(255, 124, 1, 0.5);
+}
+.trash{
+  cursor: pointer;
+  padding-right: 0.5rem;
+}
+.redirection-text {
+    font-size: 2rem;
+    animation: pulse 1s infinite alternate;
+  }
+  @keyframes pulse {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .menu-bold{
+    font-weight: bold;
+    padding: 0.5rem;
+  }
+  .menu-light{
+    padding-left: 1rem;
+    font-size: 0.8rem;
+  }
+  .menu-light-price{
+    font-size: 0.8rem;
+    text-align: center;
+  }
